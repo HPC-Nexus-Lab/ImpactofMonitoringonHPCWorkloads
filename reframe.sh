@@ -4,4 +4,4 @@
 
 cd $(dirname $0)
 
-reframe "$@"
+RFM_PREFIX=reframe/.results/ reframe -C reframe/settings.py -c reframe/tests/ "$@"
