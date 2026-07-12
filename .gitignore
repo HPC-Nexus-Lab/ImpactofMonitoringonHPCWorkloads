@@ -1,0 +1,11 @@
+old/
+venv/
+__pycache__/
+.ipynb_checkpoints
+Paper/Paper.aux
+Paper/Paper.bbl
+Paper/Paper.blg
+Paper/Paper.dvi
+Paper/Paper.log
+Paper/Paper.pdf
+Paper/Paper.synctex.gz
