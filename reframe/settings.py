@@ -77,6 +77,12 @@ site_configuration = {
             "sqlite_db_file": "reframe/.results/results.db",
         },
     ],
+    "general": [
+        {
+            "report_file": "reframe/.results/run-report-{sessionid}.json",
+            "topology_prefix": "reframe/.results/topology"
+        }
+    ],
     "environments": [
         {
             'name': 'builtin',
