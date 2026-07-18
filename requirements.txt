@@ -1,0 +1,4 @@
+scipy
+jupyter
+reframe-hpc
+statsmodels # For t-test pre-indication
