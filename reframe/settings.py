@@ -38,32 +38,32 @@ site_configuration = {
                 }
             ]
         },
+        # {
+        #     'name': "psst_server",
+        #     'descr': "Ex-PSST Server",
+        #     'hostnames': [ 'vancelle' ],
+        #     'partitions': [
+        #         {
+        #             'name': 'default',
+        #             'scheduler': 'ssh',
+        #             'launcher': 'ssh',
+        #             'environs': ['builtin'],
+        #             'sched_options': {
+        #                 'ssh_hosts': [ "10.0.2.167" ],
+        #             },
+        #             'access': [  '10.0.2.167' ]
+        #         }
+        #     ]
+        # },
         {
-            'name': "psst_server",
-            'descr': "Ex-PSST Server",
-            'hostnames': [ 'vancelle' ],
-            'partitions': [
-                {
-                    'name': 'default',
-                    'scheduler': 'ssh',
-                    'launcher': 'ssh',
-                    'environs': ['builtin'],
-                    'sched_options': {
-                        'ssh_hosts': [ "10.0.2.167" ],
-                    },
-                    'access': [  '10.0.2.167' ]
-                }
-            ]
-        },
-        {
-            'name': "psst_server_local",
-            'descr': "Ex-PSST Server local",
-            'hostnames': [ 'server' ],
+            'name': "local",
+            'descr': "local",
+            'hostnames': [ 'server', 'vancelle' ],
             'partitions': [
                 {
                     'name': 'default',
                     'scheduler': 'local',
-                    'launcher': 'local',
+                    'launcher': 'mpirun',
                     'environs': ['builtin'],
                     'sched_options': {
                     },
