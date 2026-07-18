@@ -1,0 +1,538 @@
+\documentclass[conference]{IEEEtran}
+%\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{multirow}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+\bibliographystyle{plain}
+
+\title{Measuring the Impact of Monitoring on HPC Workloads}
+
+\author{\IEEEauthorblockN{Steven Presser-Valderrama}
+\IEEEauthorblockA{\textit{HPC Nexus Laborartory} \\
+\textit{Technological University Dublin}\\
+Dublin, Ireland \\
+ORCID: 0000-0002-0362-6741}
+\and
+\IEEEauthorblockN{Tania Malik}
+\IEEEauthorblockA{\textit{HPC Nexus Laborartory} \\
+\textit{Technological University Dublin}\\
+Dublin, Ireland \\
+email address or ORCID}
+}
+
+\maketitle
+
+\begin{abstract}
+HPC constantly balances performance and monitoring. Significant previous work 
+has examined the impact of monitoring on HPC workloads. However, the 
+methodology, statistical robustness and even units used in previous work vary 
+greatly. This work proposes a method for comparably measuring the impact of 
+monitoring on HPC workloads. Additionally, the method is applied to measure 
+the impact of popular and emerging in- and out-of band monitoring tools.
+\end{abstract}
+
+\begin{IEEEkeywords}
+High-Performance Computing, Monitoring, Metrics, Performance
+\end{IEEEkeywords}
+
+\section{Introduction} \label{introduction}
+HPC is the art of extracting as much performance as possible from as little 
+computing infrastructure as possible. This requires balancing many competing 
+needs, such as processor use, memory use, cache use, and network bandwidth.
+Performing this tuning requires monitoring the systems on which an HPC workload
+runs. However, much like Shrödinger's infamous cat
+\cite{schroedingerGegenwaertigeSituationQuantenmechanik1935}, the act of 
+monitoring and
+measuring HPC system performance impacts the system. This can be through the 
+use of CPU time that the workload could otherwise use, jitter on the network 
+caused by monitoring processes or even cache invalidations caused by
+monitoring processes.
+
+This work seeks to quantify the impact of monitoring processes on HPC workloads
+in a standardized way. 
+Further, this paper seeks to create a standardized method for evaluating the 
+impact of monitoring on an HPC system, as well as contributing a reference
+implementation thereof.
+
+In Section \ref{background}, we discuss prior work, including evaluations of monitoring 
+systems. Section \ref{motivation} discusses our motivation for undertaking this 
+work. Section \ref{methodology} continues by discussing the proposed methodology to measure monitoring 
+impact, with a reference implementation in Section \ref{implementation}. We continue in Section \ref{results} by 
+showing the results of using the methodology, which are discussed in Section \ref{discussion}.
+while Section \ref{futurework} describes future work. Finally, we conclude in Section \ref{conclusion}.
+
+\section{Background} \label{background}
+
+This work focuses on the collection of metrics in HPC systems, as well as 
+methods for evaluating their impacts on the system.
+
+A metric is a numeric measurement of a system property collected at regular intervals.
+Some examples of
+metrics are temperature of a core, memory usage of a system, cache misses in a
+specified period, and lifetime power usage of a system. Measurements can
+then be broken down into two subcategories: instantaneous (e.g.: temperature of a core) and
+accumulating (e.g.: power usage or cache misses). Accumulating metrics then have 
+two subcategories: windowed (e.g.: cache misses in the last minute) and 
+lifetime (e.g.: lifetime power usage).
+
+The methods used to gather metrics can be divided into in-band and out-of-band.
+Collecting metrics in band is done via software running on the same computing 
+hardware running the HPC workload. That is, via software running on the compute 
+node's operating system. In contrast, out-of-band metrics are gathered via any 
+method that does not run software on the compute node's operating system.
+
+\subsection{In-Band Metric Collection}
+
+Classically, metrics about how compute nodes in an HPC system are performing 
+have been collected using software running on the operating system of the node. 
+Because the monitoring software runs on the same processor and uses the same 
+resources as the HPC workload, 
+poorly-written monitoring code can cause overhead on HPC nodes, thus slowing 
+down the HPC workload. For example,
+this can occur if a monitoring process uses significant network bandwidth, 
+which slows communications between nodes. Further, if monitoring does not 
+run at the same time on all nodes involved in a workload, it can cause jitter - 
+some processes are delayed and therefore slower to communicate results, causing 
+all processes to wait for the slow results.
+Therefore, significant effort has gone into developing low-impact/low-overhead
+monitoring software that can run alongside compute workloads.
+
+Such software can either be deployed per-job by the user or system-wide by the 
+administrator. Broadly speaking, both types serve 
+the same purpose: collecting performance counters accessible to the operating 
+system (such as CPU frequency and memory utilization) and conveying them to a 
+central data store with as little impact on the compute node and network fabric 
+as possible.
+
+Two examples of per-job metric-gathering software are LIKWID\cite{gruberLIKWID2024}
+and PAPI\cite{mucciPAPIPortableInterface}. These tools are designed to be 
+deployed by the user launching an HPC job and can be tuned by the user to 
+collect only the required data. However, the use of these tools is not without 
+cost.
+Voevodin et al.\cite{voevodinOverheadAnalysisPerformance2022} found a measurable 
+overhead for both LIKWID (2.78\%) and PAPI (3.83\%).
+
+System-wide monitoring is deployed by the adminsitrator of the system. In 
+contrast to per-user metric-gathering, it cannot be disabled for specific jobs. 
+Uses may include hardware health monitoring, post-mortem of failed jobs, or 
+classification of workload types to plan for the next system. Popular examples 
+are LDMS\cite{agelastosLightweightDistributedMetric2014} and HPCPerfStats
+(formerly TACCStats)
+\cite{evansComprehensiveResourceUse2014,TACCHPCPerfStats2026}. 
+ LDMS claims to have no statistically significant impact on several 
+benchmarks\cite{LightweightDistributedMetric}, as tested on Blue Waters, a 6912 
+node system. Additionally, measurement of CPU time was performed and found that 
+LDMS used 0.009\% of CPU time while collecting 1012 metrics every 5 seconds
+\cite{brandtHighFidelityData}. HPCPerfStats estimates an overhead of less than 0.1\% 
+when run with a 10-minute collection interval, with each collection taking less 
+thank half a second.
+
+\subsection{Out-of-Band Metric Collection}
+
+In contrast to in-band metrics, out-of-band matrics are gathered from any source
+that is not the operating system of the node. Some examples include node 
+Baseboard Management Controllers (BMCs)
+\cite{liMonSTerOutoftheBoxMonitoring2020,cockEnzianOpenGeneral2022a} and 
+non-contact\cite{kamilPowerEfficiencyHigh2008} and 
+contact\cite{asgherEvaluatingHardwareSoftware2025,ilschePowerMeasurementTechniques2019} external power 
+meters. Additionally, significant research has been performed adding internal power 
+measurement devices\cite{ilschePowerMeasurementsCompute2015,larosPowerInsightCommodityPower2013,vlugtPowerSensor3FastAccurate2025}.
+
+External measurement devices provide an easy method to acquire 
+high-frequency measurements of the power used by a system. This data can be 
+used for many purposes, including 
+digital twins\cite{brewerDigitalTwinFramework2024}
+ or to classify workloads\cite{kohlerRecognizingHPCWorkloads2021}.
+However, this data is limited only to what can be measured externally from the 
+node. Additionally, any monitor which requires modifying the compute node 
+itself will most likely void the warranty on the hardware, making it difficult 
+or impossible to recieve support or replacement parts from the manufacturer.
+
+In contrast, the BMC is a common element of server-class hardware, designed and 
+integrated by the manufacturer.
+BMCs typically manage the underlying hardware and firmware of a node, provide remote power 
+control capabilities, and remote console connections. Communication with BMCs 
+is most often via the Intelligent Platform Management Protocol 
+(IPMI)\cite{IPMIStandard}, RedFish\cite{RedfishSpecification}, 
+or a web interface built by the manufacturer of the BMC
+\cite{enterpriseLoggingILOWeb,PowerEdgeSetIDRAC10}.
+
+In contrast to exeternal meters, BMCs may interact with the compute node itself. 
+Often this takes the form of reading sensors via hardware busses, but some implementations may 
+interact with kernel modules or the operating system\cite{IDRACServiceModule}. 
+Interestingly in an HPC context, this interaction is sometimes inverted, with 
+the BMC providing sensor readings to the operating system\cite{enterpriseUserAccessCompute,martinCrayXC30Power}.
+
+However, BMCs are often significantly more limited in the speed with which they 
+can collect data. For example, Lai\cite{laiBenchmarkingBMCs} tested RedFish 
+response times on two BMCs and found that the time to respond to a single 
+(HTTP) RedFish request varied between 0.5 seconds and 0.93 seconds. As each 
+RedFish request can only fetch a sinlge metric, this severly limits the speed 
+at which metrics may be collected.
+
+Minimal previous work exists on the overhead of out-of-band monitoring on HPC 
+workloads. Fasse et al.\cite{faasseOutBandPerformance2020} run 
+the SPEC CPU 2107 benchmark once without monitoring and once with monitoring. 
+They then examine the two results, and 
+assert that because the difference (0.5\%) is with run-to-run variation of the 
+benchmark, there is no performance impact. However, they do not collect a 
+statistically significant sample, nor perform any statistical analysis.
+
+Other work, such as Li et al.
+\cite{liMonSTerOutoftheBoxMonitoring2020}
+focuses more on how the use of a BMC for metric collection shifts the network 
+traffic associated with metric collection to the management network, which 
+they assert should reduce load on the compute fabric. They do not examine 
+whether or not using the BMC for monitoring has any impact on the performance 
+of the compute node.
+
+In short, the general consesus is that monitoring via the BMC will have no 
+effect on the running workload and that monitoring via the BMC may have a 
+positive effect compared to performing monitoring via the operating system.
+
+Out-of-band monitoring data has already found significant use in the simulation 
+of HPC systems and their supporting infrastructure. For example, out-of-band 
+monitoring data was critial in building 
+ExaDigiT\cite{brewerDigitalTwinFramework2024}, which provides simulations of 
+liquid-cooled HPC systems. Software like ExaDigiT will be critical in planning
+and optimizing future HPC systems, including reducing total energy-to-solution 
+in large systems.
+
+\section{Motivation} \label{motivation}
+
+System-wide monitoring is of exreme importance to operating HPC systems. The data 
+is needed for everything from monitoring hardware for failure to determining the 
+workloads running on a system. However, collecting that data also has a 
+cost in the form of overhead - lost computation on the HPC system.
+
+In this work, we aim to provide 
+a logical and software frameowrk for performing comparisons of different 
+monitoring options. Doing so will ease the selection for systems administrators 
+by giving them an important insight into the overhead of each and therefore the 
+tradeoffs.
+
+We will then apply this framework to create directly comparible measurements of 
+several in-band monitoring solutions, as well as to provide the first 
+statistically meaningful data on whether or not monitoring via the BMC affects 
+running workloads.
+
+% This needs to go in the direction of more cabale BMCs and BMCs which may start to interact with the OS. Need to be able to verify that there is no impact.
+% Further, some 
+% manufactuers have BMCs which can interact with the host operating system via 
+% kernel drivers (for example, in Dell's iDRAC\cite{IDRACServiceModule}) Even on 
+% systems which don't use kernel drivers, 
+% communication from the BMC to sensors could be via a shared bus (i.e., i2c), 
+% which could have effects on the system.
+
+% Out-of-Band monitoring is an underexplored area of 
+% Previous work focused on using simulated out-of-band metrics
+% for classification of jobs by type\cite{presserRealTimeClassification2022}. In
+% preparing to extend that work to non-simulated out-of-band monitoring data, we
+% noticed that many in-band metric systems had associated measurements of impact 
+% on HPC workloads. However, we noticed that these were not standardized or 
+% comparable. Further, we noted that no measurement had ever been made of the
+% impact of out-of-band monitoring, at least for BMC-based monitoring.
+
+% Therefore, our motivation is to fill two gaps in existing knowledge: first, 
+% to provide directly comparable measurements of various monitoring systems, 
+% including both in- and out-of-band. Second to demonstrate what (if any) impact 
+% BMC-based out-of-band monitoring has on HPC workloads.
+
+\section{Framework} \label{methodology}
+
+This work aims to determine if there is a meaningful difference between 
+a base case (no monitoring) and various experimental conditions. The general
+experimental flow is:
+
+\begin{enumerate}
+\item Determine the benchmarks to run
+\item Tune benchmarks to fully utilize the system and prepare test cases
+\item Perform a pilot test
+\item Gather baseline data without monitoring
+\item Gather experimental data with monitoring (in various configurations, if desired)
+\item Perform statistical tests comparing each experimental scenario to the 
+baseline scenario
+\end{enumerate}
+
+These steps are discussed in more depth in the following subsections.
+
+\subsection{Selecting Benchmarks}
+
+We begin by selecting benchmarks to run. There is no single correct set of 
+benchmarks. Instead, these will vary by system. As guidance, we suggest that 
+these benchmarks include at least those used in system acceptance. Additionally, 
+we suggest using any benchmarks intended to be small scale simulations of 
+workloads the system is expected to run (so-called microbenchmarks).
+
+We anticipate HPL\cite{dongarraLINPACKBenchmarkPresent2003} and 
+HPCG\cite{herouxNewMetricRanking2013} being common choices of benchmark, if 
+only because they are so often used in system acceptances.
+
+\subsection{Tuning Benchmarks and Preparing Test Cases}
+
+The benchmarks are then tuned to the experimental system. Specifically, each 
+benchmark is tuned to fully saturate the resources it is to test. For example, a 
+CPU benchmark is tuned to utilize the CPU at 100\%, an IO benchmark to saturate 
+the IO system, etc. Benchmarks which simulate an application are tuned for best 
+performance. We anticipate that in many cases, such tuning will already have 
+been perfomed as part of system acceptance.
+
+Additionally, test cases are prepared which reflect the experimental 
+condition(s). For example, if testing whether a change to the monitoring system 
+affects overhead, two nearly identical images might be prepared: one with 
+the monitoring system and one without.
+
+\subsection{Pilot Test}
+
+Next, we must determine the sample size required for statistically significant 
+results. A small pilot study of the benchmarks is run. This includes running 
+each of the tests under the baseline and experimental conditions a 
+pre-determined number of times. More runs here may result in needing fewer 
+later, but there are no set rules for determining how many to run.
+
+The gathered data is then used to perform power analysis, which determines how 
+many runs are required to determine statistical significane. This number should 
+be taken as a minimum - more data will allow more confidence in the results.
+
+\subsection{Gathering Data}
+
+In order to gather statistically significant data, the benchmarks are run 
+for at least as many repitions as required by the power anaylsis and a
+performance metric gathered from each run. The performance 
+metric need not be the same between all benchmarks. Example performance metrics 
+include runtime, FLOPs, and I/O operations per second, but will vary based on 
+the benchmark.
+
+Benchmarks are then run a pre-determined number of times under each 
+experimental condition and the performance metric from each stored.
+
+% Gathering data is performed in two stages. First, data is gathered with no 
+% monitoring enabled. Then, the same procedure is repeated with monitoring 
+% running.
+
+% Gathering data involves running the benchmarks and collecting performance 
+% metrics from the benchmarks until a statistically-significant sample is acquired.
+
+\subsection{Analysis}
+
+Once sufficient data is collected, a t-test is performed to test whether each 
+experimental condition varies from the baseline in a statistically significant
+manner. Additionally, the percent change from the baseline is calculated.
+Critically, we assume that all test conditions have the same number of 
+data points. If this is not the case, data may be downsampled.
+
+\section{Implementation} \label{implementation}
+
+We provide \cite{} a reference implementation of software to implement the
+methodology discussed in Section IV. This reference uses 
+reFrame\cite{karakasisRegressionFrameworkChecking} to manage running benchmarks,
+then performs analysis in a Jupyter notebook.
+
+In order to validate this framework, we run it with three experimental 
+conditions:
+
+\begin{itemize}
+    \item Using LDMS
+    \item Using HPCPerfStats
+    \item Collecting metrics from the BMC with a custom script
+\end{itemize}
+
+The benchmarks run under Slurm on a HPE DL360 Gen 10 with two Intel Xeon Gold 
+5120 processors and XX GiB DDR4 2133MHz RAM. The system has an iLO5 as a BMC.
+
+\subsection{Selecting Benchmarks}
+
+%TODO: Do we want to run any of this as single-CPU benchmarks? I think no, 
+% because how do we know which core the BMC would affect? Even if we reduce the
+% system to a single core for the benchmark and one for the system, there's no 
+% way of knowing.
+
+In order to keep this evaluation simple, we focus on single-node CPU 
+benchmarks. Because the software monitoring systems must use the CPU, we 
+believe this is the element of the system most likely to show an effect from 
+monitoring software. Additionally, we believe that if the use of a BMC for 
+monitoring has any effect, it will affect the CPU, which controls almost all 
+elements of the compute node.
+
+As our benchmarks, we select:
+
+\begin{itemize}
+    \item HPL\cite{dongarraLINPACKBenchmarkPresent2003}
+    \item HPCG\cite{herouxNewMetricRanking2013}
+    \item IS, EP, CG, MG, FT, BT, SP, and LU from the NPB suite\cite{NASParallelBenchmarksa}
+\end{itemize}
+
+\subsection{Tuning Benchmarks and Preparing Test Cases}
+
+We use three exerimental test cases: LDMS, HPCPerfStats, and BMC-based 
+monitoring. In each case, the monitoring system is configured to collect data 
+at 1 Hertz, with the default scope of collection.
+
+The following benchmarks were set to run using XX tasks, thus using all cores 
+of the system. Where tasks must be mapped to a three dimentional arrangement, 
+we have noted the X, Y, and Z task counts in parentheses.
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+The remaining benchmarks have specific requirements for the number of tasks 
+(such as a square number). In 
+order to utilize 100\% of the CPU, we disabled the unused processor cores using 
+\texttt{/sys/devices/system/cpu/cpu*/offline}\cite{KernelorgDocDocumentation}.
+The benchmarks therefore ran witht he following task counts:
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\subsection{Pilot Test}
+
+Once the benchmarks are fully tuned, we run our pilot test. For the code used 
+to run these tests, please see the artifact appendix of this paper.
+
+Initially, we run XX(20?) repetitions of each benchmark under the baseline 
+(no monitoring) and each of the experimental conditions. We then perform a 
+power analysis using the following values to determine the minimum number of 
+runs of each benchmark are required. The Jupyter notebook used to perform power 
+analysis is included in the artifact appendix.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c |} 
+    \hline
+    Parameter & Value \\ [0.5ex] 
+    \hline
+    Repeats, each benchmark & 20 \\ 
+    \hline
+    \alpha & 0.05 \\ 
+    \hline
+    Power & 0.8 \\
+    \hline
+\end{tabular}
+\caption{Parameters used for power analysis}
+\label{table:1}
+\end{table}
+
+These parameters indicate that if a effect exists, there is an 80\% chance it 
+will be found and that if an effect is found, there is a 5\% probablity that it 
+is chance and not a real effect.
+
+\subsection{Gathering Data}
+
+Each benchmark was then run the number of times indicated by the power 
+analsysis for the baseline and each of the experimental conditions. The code 
+used to do so is available in the artifact repository for this paper.
+
+\subsection{Analysis}
+
+Finally, analysis was performed using the Jupyter notebook, as listed in the 
+artifact appendix to this paper.
+
+\section{Results} \label{results}
+
+\subsection{Pilot Study}
+
+Our pilot study concluded that to have staistically significant results, we 
+needed XX repititions of each benchmark under each experimental condition.
+
+\subsection{Full Study}
+
+Our full study showed the following results:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c |} 
+    \hline
+    Benchmark & Percent change & p-Value \\ [0.5ex] 
+    \hline
+     & XX.X\% & \\ 
+    \hline
+     & & \\ 
+    \hline
+     & & \\
+    \hline
+\end{tabular}
+\caption{Results of comparison between no monitoring and LDMS}
+\label{table:2}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c |} 
+    \hline
+    Benchmark & Percent change & p-Value \\ [0.5ex] 
+    \hline
+     & XX.X\% & \\ 
+    \hline
+     & & \\ 
+    \hline
+     & & \\
+    \hline
+\end{tabular}
+\caption{Results of comparison between no monitoring and HPCPerfStats}
+\label{table:3}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c |} 
+    \hline
+    Benchmark & Percent change & p-Value \\ [0.5ex] 
+    \hline
+     & XX.X\% & \\ 
+    \hline
+     & & \\ 
+    \hline
+     & & \\
+    \hline
+\end{tabular}
+\caption{Results of comparison between no monitoring and BMC-based monitoring}
+\label{table:4}
+\end{table}
+
+\section{Discussion} \label{discussion}
+
+
+
+
+\section{Future Work} \label{futurework}
+
+This work focused on building and proving a methodology. It was 
+specifically limited to single-node runs of CPU-focused benchmarks.
+
+Future work will extend beyond these limits, examining how this methodology 
+works on multi-node benchmarks. Further, it will extend to
+other types of benchmarks - for example, GPU or tensor-hardware focused.
+
+Additionally, future work will examine the applications of
+out-of-band monitoring data. As we have now shown that collecting this data has 
+no measurable cost of the performance of HPC systems, we wish to explore how
+it can be used to better monitor running systems and jobs. For instance, can it 
+be used to detect stalled jobs? Can it be used to determine what kinds of jobs
+are running on a system? Can it be used for early detection of hardware 
+failures?
+
+\section{Conclusion} \label{conclusion}
+
+This work contributes a methodology for measuring the impact of various 
+monitoring systems on the performance of HPC systems. It performs measurements,
+demonstrating [RESULTS]. Further, it contributes a refernce implementation of
+this methodology. While there could be significant future work to extend the 
+reference implementation, the implementation is well prepared for these
+extentions.
+
+\bibliography{Paper}{}
+
+\end{document}
