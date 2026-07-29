@@ -38,6 +38,23 @@ site_configuration = {
                 }
             ]
         },
+        {
+            'name': "phd_slurm",
+            'descr': "PhD server slurm",
+            'hostnames': [ 'slurm-admin' ],
+            'partitions': [
+                {
+                    'name': 'default',
+                    'scheduler': 'squeue',
+                    'launcher': 'srun',
+                    'environs': ['builtin'],
+                    'resources': [
+                    ]
+                }
+            ],
+            "modules_system": "envmod",
+            "modules": [ "mpi/openmpi-x86_64", "mpi/mpich-x86_64" ]
+        },
         # {
         #     'name': "psst_server",
         #     'descr': "Ex-PSST Server",
