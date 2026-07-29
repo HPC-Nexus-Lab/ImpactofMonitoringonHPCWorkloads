@@ -53,7 +53,7 @@ site_configuration = {
                 }
             ],
             "modules_system": "envmod",
-            "modules": [ "mpi/openmpi-x86_64", "mpi/mpich-x86_64" ]
+            "modules": [ "mpi/openmpi-x86_64" ]
         },
         # {
         #     'name': "psst_server",

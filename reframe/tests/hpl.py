@@ -17,6 +17,7 @@ class hpl_test(rfm.RegressionTest):
     # Build info
     build_system = 'Make'
     sourcesdir='hpl/'
+    modules = [ "mpi/mpich-x86_64" ]
 
     time_limit = '15m'
 
