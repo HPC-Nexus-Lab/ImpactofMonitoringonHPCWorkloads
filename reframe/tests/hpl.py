@@ -5,15 +5,20 @@ from reframe.core.launchers.mpi import SrunLauncher
 
 
 @rfm.simple_test
-class hpl_test(rfm.RunOnlyRegressionTest):
+class hpl_test(rfm.RegressionTest):
     valid_systems = ['*']
     valid_prog_environs = ['*']
     parallel_launcher = 'mpirun'
     r_num_tasks = variable(int, value=56)
     num_cpus_per_task = 1
     arch = variable(str, value='Linux_Intel64')
-    sourcesdir = '/home/steven/Slurm/hpl/bin/Linux_Intel64'
-    time_limit = '40m'
+    executable_opts = [ "--dat", "./HPL.dat"]
+
+    # Build info
+    build_system = 'Make'
+    sourcesdir='hpl/'
+
+    time_limit = '15m'
 
     @sanity_function
     def validate(self):
@@ -45,5 +50,9 @@ class hpl_test(rfm.RunOnlyRegressionTest):
 
     @run_before('run')
     def set_executable(self):
-        self.executable = f"/usr/bin/time /home/steven/Slurm/hpl/bin/{self.arch}/xhpl"
+        self.executable = f"bin/{self.arch}/xhpl"
         self.num_tasks = self.r_num_tasks
+
+    @run_before('compile')
+    def set_arch(self):
+        self.build_system.options += [ f"arch={self.arch}" ]
