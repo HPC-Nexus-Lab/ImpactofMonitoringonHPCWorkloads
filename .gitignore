@@ -11,3 +11,5 @@ Paper/Paper.pdf
 Paper/Paper.synctex.gz
 reframe/.results
 reframe/tests/npb
+reframe/.results.local
+reframe/tests/hpl
