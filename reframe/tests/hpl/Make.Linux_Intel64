@@ -84,9 +84,9 @@ HPLlib       = $(LIBdir)/libhpl.a
 # MPdir        = /opt/intel/mpi/4.1.0
 # MPinc        = -I$(MPdir)/include64
 # MPlib        = $(MPdir)/lib64/libmpi.a
-MPdir       = /usr/lib64/mpich/
-MPinc       = -I/usr/include/mpich-x86_64/
-MPlib       = -L$(MPdir)/lib -lmpich
+MPdir       = /usr/lib64/openmpi/
+MPinc       = -I/usr/include/openmpi-x86_64/
+MPlib       = -L$(MPdir)/lib -lmpi
 #MPlib /usr/lib64/mvapich2/lib/libmpi.a
 #
 # ----------------------------------------------------------------------

@@ -17,7 +17,6 @@ class hpl_test(rfm.RegressionTest):
     # Build info
     build_system = 'Make'
     sourcesdir='hpl/'
-    modules = [ "mpi/mpich-x86_64" ]
 
     time_limit = '15m'
 
@@ -47,7 +46,7 @@ class hpl_test(rfm.RegressionTest):
     @run_before('run')
     def set_cpu_binding(self):
         if isinstance(self.job.launcher, SrunLauncher):
-            self.job.launcher.options = ['--mpi=pmi2']
+            self.job.launcher.options = ['--mpi=pmix']
 
     @run_before('run')
     def set_executable(self):
