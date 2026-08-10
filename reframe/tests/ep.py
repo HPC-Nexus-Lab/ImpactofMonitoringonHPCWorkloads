@@ -16,6 +16,11 @@ class ep_test(rfm.RegressionTest):
     # Build info
     build_system = 'Make'
     sourcesdir='npb/NPB3.4-MPI'
+
+    time_limit = '15m'
+
+    # prerun_cmds  = [ 'pwd', 'whoami', f"~/phd/reframe/disable_procs.sh {r_num_tasks}"]
+    # postrun_cmds = [ '~/phd/reframe/enable_procs.sh' ]
     
     @run_before('compile')
     def set_class(self):
@@ -41,7 +46,7 @@ class ep_test(rfm.RegressionTest):
     @run_before('run')
     def set_cpu_binding(self):
         if isinstance(self.job.launcher, SrunLauncher):
-            self.job.launcher.options = ['--mpi=pmi2']
+            self.job.launcher.options = ['--mpi=pmix']
 
     @run_before('run')
     def set_executable(self):
