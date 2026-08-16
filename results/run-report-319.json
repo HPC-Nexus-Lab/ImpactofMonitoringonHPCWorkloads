@@ -1,0 +1,149 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "21204e72-59ed-4272-94b8-fa38ce2fd5e1",
+    "time_start": "20260729T224603-0400",
+    "time_start_unix": 1785379563.8639343,
+    "time_end": "20260729T224748-0400",
+    "time_end_unix": 1785379668.1060536,
+    "time_elapsed": 104.24211931228638,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=C -S r_num_tasks=56 -n lu_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-hy3k9801.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": null,
+          "fail_reason": null,
+          "filename": "/home/steve/phd/reframe/tests/lu.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-29T22:47:47-04:00",
+          "job_completion_time_unix": 1785379667.899095,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "pass",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "21204e72-59ed-4272-94b8-fa38ce2fd5e1",
+          "time_compile": 7.860461235046387,
+          "time_performance": 0.013560056686401367,
+          "time_run": 96.22954893112183,
+          "time_sanity": 0.012537717819213867,
+          "time_setup": 0.048499107360839844,
+          "time_total": 104.2341239452362,
+          "uuid": "21204e72-59ed-4272-94b8-fa38ce2fd5e1:0:0",
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/lu_test",
+          "job_exitcode": null,
+          "job_nodelist": [
+            "worker"
+          ],
+          "job_submit_time": 1785379571.9011204,
+          "jobid": "1673",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "lu_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/lu.C.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "e4b219ce",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "lu_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "perfvalues": {
+            "phd_slurm:default:mops_total": [
+              24163.0,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:mops_process": [
+              431.48,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:runtime": [
+              84.39,
+              0,
+              null,
+              null,
+              "runtime",
+              "pass"
+            ]
+          },
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "problem_size": "C",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "lu_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/lu_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "lu_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

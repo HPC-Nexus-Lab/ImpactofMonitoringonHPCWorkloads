@@ -1,0 +1,156 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "1d18803b-2833-4d93-95c9-a4e52c5f89c6",
+    "time_start": "20260723T080038-0400",
+    "time_start_unix": 1784808038.8403945,
+    "time_end": "20260723T080048-0400",
+    "time_end_unix": 1784808048.020273,
+    "time_elapsed": 9.17987847328186,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=S -n ep_test --run --session-extras test=no_monitoring_test",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-r4jtdhhj.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 0,
+    "num_skipped": 0,
+    "test": "no_monitoring_test"
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": null,
+          "fail_reason": null,
+          "filename": "/home/steve/phd/reframe/tests/ep.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-23T08:00:47-04:00",
+          "job_completion_time_unix": 1784808047.8153584,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "pass",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "1d18803b-2833-4d93-95c9-a4e52c5f89c6",
+          "time_compile": 1.1056292057037354,
+          "time_performance": 0.013910770416259766,
+          "time_run": 7.930057048797607,
+          "time_sanity": 0.012372016906738281,
+          "time_setup": 0.036406517028808594,
+          "time_total": 9.171607255935669,
+          "uuid": "1d18803b-2833-4d93-95c9-a4e52c5f89c6:0:0",
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/ep_test",
+          "job_exitcode": null,
+          "job_nodelist": [
+            "worker"
+          ],
+          "job_submit_time": 1784808040.1114297,
+          "jobid": "108",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "ep_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/ep.S.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "b1627137",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "ep_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "perfvalues": {
+            "phd_slurm:default:mops_total": [
+              2030.09,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:mops_process": [
+              36.25,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:runtime": [
+              0.02,
+              0,
+              null,
+              null,
+              "runtime",
+              "pass"
+            ]
+          },
+          "postbuild_cmds": [],
+          "postrun_cmds": [
+            "~/phd/reframe/enable_procs.sh"
+          ],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [
+            "pwd",
+            "whoami",
+            "~/phd/reframe/disable_procs.sh 56"
+          ],
+          "problem_size": "S",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "ep_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "ep_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

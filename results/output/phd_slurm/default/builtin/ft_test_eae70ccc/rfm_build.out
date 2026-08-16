@@ -1,0 +1,22 @@
+   =========================================
+   =      NAS Parallel Benchmarks 3.4      =
+   =      MPI/Fortran/C                    =
+   =========================================
+
+cd FT; make CLASS=C F08=def
+make[1]: Entering directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ft_test_eae70ccc/FT'
+make[2]: Entering directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ft_test_eae70ccc/sys'
+cc -DFORTRAN_REC_SIZE=0 -o setparams setparams.c
+make[2]: Leaving directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ft_test_eae70ccc/sys'
+../sys/setparams ft C 
+cp mpinpb_def.f90 mpinpb.f90
+mpif90 -c  -O3 mpinpb.f90
+mpif90 -c  -O3 ft_data.f90
+mpif90 -c  -O3 ft.f90
+cd ../common; cp mpinpb_def.h mpinpb.h
+cd ../common; mpif90 -c  -O3 get_active_nprocs.f90
+cd ../common; mpif90 -c  -O3 randi8.f90
+cd ../common; mpif90 -c  -O3 print_results.f90
+cd ../common; mpif90 -c  -O3 timers.f90
+mpif90 -O3 -o ../bin/ft.C.x ft.o ft_data.o mpinpb.o ../common/get_active_nprocs.o ../common/randi8.o ../common/print_results.o ../common/timers.o 
+make[1]: Leaving directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ft_test_eae70ccc/FT'

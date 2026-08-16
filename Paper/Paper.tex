@@ -19,16 +19,31 @@
 \title{Measuring the Impact of Monitoring on HPC Workloads}
 
 \author{\IEEEauthorblockN{Steven Presser-Valderrama}
-\IEEEauthorblockA{\textit{HPC Nexus Laborartory} \\
+\IEEEauthorblockA{\textit{HPC Nexus Laboratory} \\
 \textit{Technological University Dublin}\\
 Dublin, Ireland \\
 ORCID: 0000-0002-0362-6741}
 \and
 \IEEEauthorblockN{Tania Malik}
-\IEEEauthorblockA{\textit{HPC Nexus Laborartory} \\
+\IEEEauthorblockA{\textit{HPC Nexus Laboratory} \\
+\textit{Technological University Dublin}\\
+Dublin, Ireland \\
+ORCID: 0000-0002-4461-7120}
+
+\and
+\IEEEauthorblockN{Jin Xu }
+\IEEEauthorblockA{\textit{HPC Nexus Laboratory} \\
 \textit{Technological University Dublin}\\
 Dublin, Ireland \\
 email address or ORCID}
+
+\and
+\IEEEauthorblockN{Christina Thorpe}
+\IEEEauthorblockA{\textit{HPC Nexus Laboratory} \\
+\textit{Technological University Dublin}\\
+Dublin, Ireland \\
+ORCID: 0000-0002-2359-883X
+}
 }
 
 \maketitle
@@ -61,24 +76,18 @@ use of CPU time that the workload could otherwise use, jitter on the network
 caused by monitoring processes or even cache invalidations caused by
 monitoring processes.
 
-This work seeks to quantify the impact of monitoring processes on HPC workloads
-in a standardized way. 
-Further, this paper seeks to create a standardized method for evaluating the 
-impact of monitoring on an HPC system, as well as contributing a reference
-implementation thereof.
-
-In Section \ref{background}, we discuss prior work, including evaluations of monitoring 
-systems. Section \ref{motivation} discusses our motivation for undertaking this 
-work. Section \ref{methodology} continues by discussing the proposed methodology to measure monitoring 
-impact, with a reference implementation in Section \ref{implementation}. We continue in Section \ref{results} by 
-showing the results of using the methodology, which are discussed in Section \ref{discussion}.
-while Section \ref{futurework} describes future work. Finally, we conclude in Section \ref{conclusion}.
-
 This work contributes a step-by-step framework for measuring changes caused by 
 monitoring on HPC systems, standards for reproducability when using the 
 framework, and a reference implementation of the framework. Finally, it applies 
 the framework to provide statistically-meaningful measurements of overhead for 
 HPCPerfStats, LDMS, and BMC-based out-of-band monitoring.
+
+In Section \ref{background}, we discuss prior work, including evaluations of monitoring 
+systems. Section \ref{motivation} discusses our motivation for undertaking this 
+work. Section \ref{methodology} continues by discussing the proposed methodology to measure monitoring 
+impact, with an example application in Section \ref{implementation}. We continue in Section \ref{results} by 
+showing the results of using the methodology, which are discussed in Section \ref{discussion}.
+while Section \ref{futurework} describes future work. Finally, we conclude in Section \ref{conclusion}.
 
 \section{Background} \label{background}
 
@@ -104,9 +113,9 @@ method that does not run software on the compute node's operating system.
 
 Classically, metrics about how compute nodes in an HPC system are performing 
 have been collected using software running on the operating system of the node. 
-Because the monitoring software runs on the same processor and uses the same 
+Because the monitoring software runs on the same processors and uses the same 
 resources as the HPC workload, 
-poorly-written monitoring code can cause overhead on HPC nodes, thus slowing 
+poorly-written monitoring code can cause significant overhead on HPC nodes, thus slowing 
 down the HPC workload. For example,
 this can occur if a monitoring process uses significant network bandwidth, 
 which slows communications between nodes. Further, if monitoring does not 
@@ -129,7 +138,7 @@ deployed by the user launching an HPC job and can be tuned by the user to
 collect only the required data. However, the use of these tools is not without 
 cost.
 Voevodin et al.\cite{voevodinOverheadAnalysisPerformance2022} found a measurable 
-overhead for both LIKWID (2.78\%) and PAPI (3.83\%).
+overhead for both LIKWID (2.78\%) and PAPI (3.83\%) in certain configurations.
 
 System-wide monitoring is deployed by the adminsitrator of the system. In 
 contrast to per-user metric-gathering, it cannot be disabled for specific jobs. 
@@ -147,7 +156,7 @@ with collection at 1 Hertz\cite{TACCHPCPerfStats2026}.
 
 \subsection{Out-of-Band Metric Collection}
 
-In contrast to in-band metrics, out-of-band matrics are gathered from any source
+In contrast to in-band metrics, out-of-band metrics are gathered from any source
 that is not the operating system of the node. Some examples include node 
 Baseboard Management Controllers (BMCs)
 \cite{liMonSTerOutoftheBoxMonitoring2020,cockEnzianOpenGeneral2022a} and 
@@ -184,11 +193,13 @@ the BMC providing sensor readings to the operating system\cite{enterpriseUserAcc
 However, BMCs are often significantly more limited in the speed with which they 
 can collect data. For example, Lai\cite{laiBenchmarkingBMCs} tested RedFish 
 response times on two BMCs and found that the time to respond to a single 
-(HTTP) RedFish request varied between 0.5 seconds and 0.93 seconds. As each 
-RedFish request can only fetch a sinlge metric, this severly limits the speed 
-at which metrics may be collected.
+(HTTP) RedFish request varied between 0.5 seconds and 0.93 seconds. While a 
+Redfish request may collect multiple metrics, they typically collect only one or 
+a small set of metrics and it typically requires multiple 
+requests to collect all the metrics for a node. Thus, the time required to respond to a 
+request can severely limit the number of metrics that can be collected.
 
-Minimal previous work exists on the overhead of out-of-band monitoring on HPC 
+Minimal previous work exists on the overhead of BMC-based out-of-band monitoring on HPC 
 workloads. Fasse et al.\cite{faasseOutBandPerformance2020} run 
 the SPEC CPU 2107 benchmark once without monitoring and once with monitoring. 
 They then examine the two results, and 
@@ -206,7 +217,9 @@ of the compute node.
 
 In short, the general consesus is that monitoring via the BMC will have no 
 effect on the running workload and that monitoring via the BMC may have a 
-positive effect compared to performing monitoring via the operating system.
+positive effect compared to performing monitoring via the operating system due 
+to the redirection of monitoring traffic from the compute network to the 
+management network.
 
 Out-of-band monitoring data has already found significant use in the simulation 
 of HPC systems and their supporting infrastructure. For example, out-of-band 
@@ -226,7 +239,7 @@ It is generally agreed that overhead is measured by how much slower an HPC
 workload runs in comparison to some base configuration, expressed in percent.
 There are generally three critical elements to reproducing 
 measurements of overhead: a precise definition of the base (unaltered) case, a 
-precise definition of the experimental case, and a definition of the 
+precise definition of the experimental case(s), and a definition of the 
 statistical measurements performed to compare the cases.
 
 However, within the subfield of HPC monitoring systems, there appears to be 
@@ -271,10 +284,17 @@ each benchmark once under each condition, note that the performance difference
 is less than 0.5\%, and end their analysis by saying the difference is
 "within the run-to-run variation of the benchmark". One set of performance 
 metrics with no repetition does not data make - it barely qualifies as an 
-ancedote and is insuffucient proof that no harm has occurred.
+anecdote and is insufficient proof that no harm has occurred.
+
+Previous work has examined measurement and statistics issues in computing. For 
+instance, Mytkowicz et al. \cite{mytkowiczObserverEffectMeasurement2008} examine
+72 computer science performance papers for the observer effect and measurement bias.
+They find that none of 72 papers they survey used techniques to avoid the observer 
+effect or measurement bias. Further, they describe and suggest the use of causal
+analysis and variant generation to overcome these issues.
 
 In short, significant prior work testing the overhead of monitoring fails to 
-adequitely describe experimental conditions for reproduction or fails to 
+adequately describe experimental conditions for reproduction or fails to 
 perform meaningful stastitcal testing on results, which makes it difficult for 
 systems administrators to understand how using these systems may increase 
 overhead on their systems.
@@ -287,8 +307,9 @@ workloads running on a system. However, collecting that data also has a
 cost in the form of overhead - lost computation on the HPC system.
 
 In this work, we aim to provide 
-a logical and software frameowrk for performing comparisons of different 
-monitoring options. Doing so will ease the selection for systems administrators 
+a logical and software framework for performing comparisons of different 
+monitoring options. Doing so will ease the selection of monitoring systems 
+for systems administrators 
 by giving them an important insight into the overhead of each and therefore the 
 tradeoffs.
 
@@ -297,32 +318,10 @@ several in-band monitoring solutions, as well as to provide the first
 statistically meaningful data on whether or not monitoring via the BMC affects 
 running workloads.
 
-% This needs to go in the direction of more cabale BMCs and BMCs which may start to interact with the OS. Need to be able to verify that there is no impact.
-% Further, some 
-% manufactuers have BMCs which can interact with the host operating system via 
-% kernel drivers (for example, in Dell's iDRAC\cite{IDRACServiceModule}) Even on 
-% systems which don't use kernel drivers, 
-% communication from the BMC to sensors could be via a shared bus (i.e., i2c), 
-% which could have effects on the system.
-
-% Out-of-Band monitoring is an underexplored area of 
-% Previous work focused on using simulated out-of-band metrics
-% for classification of jobs by type\cite{presserRealTimeClassification2022}. In
-% preparing to extend that work to non-simulated out-of-band monitoring data, we
-% noticed that many in-band metric systems had associated measurements of impact 
-% on HPC workloads. However, we noticed that these were not standardized or 
-% comparable. Further, we noted that no measurement had ever been made of the
-% impact of out-of-band monitoring, at least for BMC-based monitoring.
-
-% Therefore, our motivation is to fill two gaps in existing knowledge: first, 
-% to provide directly comparable measurements of various monitoring systems, 
-% including both in- and out-of-band. Second to demonstrate what (if any) impact 
-% BMC-based out-of-band monitoring has on HPC workloads.
-
 \section{Framework} \label{methodology}
 
 We present a framework designed to determine if there is a meaningful difference between 
-a base case (no monitoring) and various experimental conditions. The framework 
+a base case and various experimental conditions. The framework 
 has two major components: a recommended experimental flow and a reporting 
 framework. Together these create a known methodology that should allow a degree 
 of comparison between various configurations, including between sites.
@@ -338,7 +337,7 @@ experimental flow is:
 \item Tune benchmarks to fully utilize the system and prepare test cases
 \item Perform a pilot test
 \item Gather baseline data without monitoring
-\item Gather experimental data with monitoring (in various configurations, if desired)
+\item Gather experimental data with monitoring (in multiple configurations, if desired)
 \item Perform statistical tests comparing each experimental scenario to the 
 baseline scenario
 \item Report the Results
@@ -381,9 +380,10 @@ benchmark is tuned to fully saturate the resources it is to test. For example, a
 CPU benchmark is tuned to utilize the CPU at 100\%, an IO benchmark to saturate 
 the IO system, etc. Benchmarks which simulate an application are tuned for best 
 performance. We anticipate that in many cases, such tuning will already have 
-been perfomed as part of system acceptance.
+been performed as part of system acceptance.
 
-Additionally, test cases are prepared which reflect the experimental 
+Additionally, test cases are defined, written down, and prepared. These cases 
+reflect the experimental 
 condition(s). For example, if testing whether a change to the monitoring system 
 affects overhead, two nearly identical images might be prepared: one with 
 the monitoring system and one without.
@@ -397,13 +397,13 @@ pre-determined number of times. More runs here may result in needing fewer
 later, but there are no set rules for determining how many to run.
 
 The gathered data is then used to perform power analysis, which determines how 
-many runs are required to determine statistical significane. This number should 
+many runs are required to determine statistical significance. The result should 
 be taken as a minimum - more data will allow more confidence in the results.
 
 \subsubsection{Gathering Data}
 
 In order to gather statistically significant data, the benchmarks are run 
-for at least as many repitions as required by the power anaylsis and a
+for at least as many repetitions as required by the power analysis and a
 performance metric gathered from each run. The performance 
 metric need not be the same between all benchmarks. Example performance metrics 
 include runtime, FLOPs, and I/O operations per second, but will vary based on 
@@ -434,20 +434,20 @@ bounds.
 Comparison within a site is easy enough. However, in order to provide utility, 
 this methodology must also provide comparison between sites. In order to do so,
 users of the methodology shall report information on the configuration used to 
-run the benchmark. We provide four tiers of reporting, ranging from the 
-minimal reporting required to publish through full reproducability. These are:
+run the benchmark when sharing results. We provide four tiers of reporting, ranging from the 
+minimal reporting required to publish through full reproducibility. These are:
 
 \begin{itemize}
     \item Bronze: Minimal information required to report a result
-    \item Silver: Results somehat comparible between sites, however may not be replicable
+    \item Silver: Results somewhat comparable between sites, however may not be replicable
     \item Gold: Results are replicable, but setting up a reproduction environment may be difficult
-    \item Platinum: Full reproducability. Any reader with sufficient resources can reproduce the results exactly
+    \item Platinum: Full reproducibility. Any reader with sufficient resources can reproduce the results exactly
 \end{itemize}
 
-In the follwoing sections, we discuss the exact informaiton to be included in 
-each tier. Each tier builds on the previous and must report the previous tier's 
+In the following sections, we discuss the exact information to be included in 
+each tier. Each tier builds on the previous one and must report the previous tier's 
 information as well. Users of the framework are always welcome to report any 
-additional information they believe is relevent. Above the bronze level, the 
+additional information they believe is relevant. Above the bronze level, the 
 required data is large enough that the authors recommend including it in an 
 appendix or as associated artifacts, rather than the main body of a publication.
 
@@ -465,7 +465,7 @@ and the system. At a minimum these include:
     deviation of the results, statistical methods used (if they vary from those 
     described here) and measures of statistical significance.
     \item A description of the hardware the results were obtained from, 
-    including hardware manufacuturer, CPU count and model number, RAM speed and 
+    including hardware manufacturer, CPU count and model number, RAM speed and 
     amount, storage system used, network system used and other vital 
     information about the system.
     \item The name and version number of the job manager
@@ -478,7 +478,7 @@ and transmitted to collection and aggregation servers at the same rate.
 Results should specifically note when this is not the case.
 
 We anticipate that these will be provided in the body of any work utilizing 
-this framework and have delibereately kept the reported information relatively 
+this framework and have deliberately kept the reported information relatively 
 small in order to enable such reporting.
 
 \subsubsection{Silver}
@@ -492,8 +492,6 @@ reporting at the Silver level adds:
     \item Performance measurements from each benchmark run
     \item Any software used to perform statistical analysis
     \item Configuration files, if any, for the benchmarks
-    \item List of services running on the compute nodes (e.g.: from 
-    \texttt{systemctl status})
 \end{itemize}
 
 \subsubsection{Gold}
@@ -552,8 +550,8 @@ reFrame\cite{karakasisRegressionFrameworkChecking} to manage running benchmarks,
 then performs analysis in a Jupyter notebook.
 
 reFrame was selected as a base software because it can easily be installed and 
-run on most systems without requiring administrative access. It is 
-distributed as a Python package, which may be installed in a virtual environment 
+run on most systems. It is 
+distributed as a Python package, which may be installed in a per-user virtual environment 
 and therefore does not require administrative access to install. Further, it 
 does not require alteration of existing job managers to use. Instead, it is 
 configured to use the user's existing access and therefore may be run without 
@@ -565,30 +563,58 @@ In order to validate this framework, we run it with three experimental
 conditions:
 
 \begin{itemize}
-    \item Using LDMS
-    \item Using HPCPerfStats
+    \item Using LDMS with the configuration file in the artifact appendix
+    \item Using HPCPerfStats with the configuration file in the artifact appendix
     \item Collecting metrics from the BMC with a custom script
+    \begin{itemize}
+        \item with a helper daemon running in the OS to collect additional metrics
+        \item without the helper daemon running in the OS
+    \end{itemize}
 \end{itemize}
 
 The benchmarks run under Slurm on a HPE DL360 Gen 10 with two Intel Xeon Gold 
-5120 processors and 16 GiB DDR4 2133MHz RAM. The system has an iLO5 as a BMC.
+5120 processors and 16 GiB DDR4 2133MHz RAM. The system BMC is an iLO5 running firmware 3.19.
 The network was 1 Gib Ethernet, provided by the built-in network interface using 
 a Broadcom NetXtreme BCM5719. Storage was provided by the built-in RAID 
 controller (based on an Intel C620) and an Intel SSDSA2BW16 SSD. This node was 
-the only worker in a Slurm 26.05.2 cluster and ran Rocky Linux 9.8. It was 
+the only worker in a SLURM 26.05.2 cluster and ran Rocky Linux 9.8. It was 
 connected to a KVM virtual machine running the Slurm controller and NFS home 
 filesystem via an unmanaged hub.
 
+The use of a single node has both advantages and imposed limitations. Using a 
+single, consistent node ensures that there are no run-to-run variations based
+on differences in hardware. Additionally, this configuration does not rely on
+external storage or systems, eliminating influence due to other jobs or users of
+a system. However, using only a single node brings significant limitations.
+It limits what we are able to test to only problems which fit on this node. We
+cannot test network-based benchmarks. And finally, it limits the meaningfulness of 
+our results. Our results will not account for any multi-node conditions, nor 
+anything related to storage or networking. Our tests will not account for whether 
+overhead on the nodes causes variations in finish times (and therefore jitter)
+when tasks are on different nodes. Tests without these limitations are left for 
+future work.
+
 \subsection{Experimental Hypothesis}
 
-We begin by stating our hypothesies:
+We begin by stating our hypotheses:
 
 \begin{enumerate}
-    \item The use of in-band monitoring systems will increase overhead in an HPC 
+    \item The use of in-band monitoring systems (LDMS and HPCPerfStats) will increase overhead in an HPC 
     system
-    \item The use of out-of-band monitoring will not increase overhead in an HPC
+    \item The use of out-of-band monitoring via the BMC (with and without an OS-level helper daemon) will not increase overhead in an HPC
     system
 \end{enumerate}
+
+Additionally, we set a threshold for equivalence. This threshold is the maximum 
+change between the baseline and an experiment that is considered equivalent. It
+will vary from system to system and depends on the tolerance of overhead on the system.
+We set this at 0.5\% for our tests, as we anticipate 0.5\% overhead to be tolerable on
+most systems. Users of the framework will likely wish to adjust this value based on their
+needs. For example, academic systems may wish to increase it, as users will likely want 
+significant monitoring data, rather than being performance focused. In contrast, real-time
+systems (such as those used for weather forecasting) may wish a lower value, as they have 
+strict limits on job runtime.
+
 
 \subsection{Selecting Benchmarks}
 
@@ -599,25 +625,44 @@ monitoring software. Additionally, we believe that if the use of a BMC for
 monitoring has any effect, it will affect the CPU, which controls almost all 
 elements of the compute node.
 
-We selected the EP (Embarassingly Parallel) benchmark from the NPB 
-suite\cite{NASParallelBenchmarksa} as our test benchmark. This benchmark is 
+We selected HPL\cite{dongarraLINPACKBenchmarkPresent2003} and the EP (Embarassingly Parallel) and SP (Scalar Penta-diagonal solver) benchmarks from the NPB 
+suite\cite{NASParallelBenchmarksa} as our test benchmarks. 
+
+HPL is a well-known and often run measurement of the capacity of a system to 
+perform floating point operations (FLOPS). The EP benchmark is 
 CPU-focused and provides an "estimate of the
 upper achievable limits for floating point performance"\cite{NASParallelBenchmarks}
 and includes minimal interprocess communication. We believe that if the CPU 
 must perform additional work for the monitoring system, that will appear as a 
-slowdown or reduction in performance of the benchmark.
+slowdown or reduction in performance of the HPL and EP benchmarks.
+
+We run HPL with a custom configuration, included in the artifact appendix. On 
+the specified hardware, this takes approximately 10 minutes to run.
 
 We selected the D and E problem sizes of the EP benchmark. The D size runs 
 quickly (about 50 to 60 seconds on our test hardware), while the E takes 
 approximately 15 minutes.
 
+In contrast, we select SP because it makes use of various resources. We do not 
+expect it to fully utilize the CPU and therefore expect to see no impact on it 
+as the monitoring configuration changes. In this sense, it serves as a control, 
+showing that the effects we hope to observe are due to the cause we posit. We 
+select the C size, which runs in approximately 280 seconds (4 minutes 40 seconds).
+
 \subsection{Tuning Benchmarks and Preparing Test Cases}
 
-Performance tuning in this case was extremely simple: the EP benchmark was set 
+Performance tuning in this case was extremely simple: HPL automatically makes 
+full use of all tasks available to it. EP benchmark was set 
 to run 56 tasks, equal to the number of hardware threads available to the operating 
-system. The system was thus kept at 100\% utilization. Finally, we select 
-millions of operations per second (Mops/s) as our performance benchmark. This 
+system. The system was thus kept at 100\% utilization for both benchmarks. 
+Finally, we select FLOPS (floating point operations per second) as our performance benchmark for HPL and 
+millions of operations per second (Mops/s) as our performance benchmark for EP. This 
 value is automatically calculated by the EP benchmark.
+
+In contrast, the SP benchmark requires a square number of tasks. In our case, 
+it was thus run with 49 cores. This left 7 cores for other work on the system. 
+This simulates a condition in which the running workload is bound by a resource 
+other than CPU time.
 
 In order to test the effect of in-band monitoring, we evaluate two different 
 monitoring systems: HPCPerfStats and LDMS. The configuration used for each is
@@ -635,17 +680,20 @@ via \texttt{amsd} (Agentless Management Service daemon)\cite{HPEAgentlessManagem
 a daemon which is installed on the operating system of the node.
 Unfortunately, it appears that on the system used, \texttt{amsd} only provides 
 this information once every 20 seconds. We nonetheless install it in order to 
-maximize the potential impact of monitoring via the BMC.
+maximize the potential impact of monitoring via the BMC. We test two BMC cases 
+- one with \texttt{amsd} running and one without \texttt{amsd} running. Thus, we 
+can separate any effect of \texttt{amsd} from monitoring with just the BMC.
 
 BMC sensor data was collected from the BMC once per second using RedFish.
-This collection includes the \texttt{amsd} data, although it changes only once 
+In the \texttt{amsd} case, this collection includes the \texttt{amsd} data, although it changes only once 
 every 20 seconds. The 
 script and URLs used for collection are available in the artifact appendix of 
 this paper. The collector ran on the Slurm admin node.
 
-Finally, we script shifting between the four test cases (no monitoring, 
-HPCPerfStats, LDMS, and BMC-based) in order to ensure consistent system state.
-This script is available in teh artifact appendix of this paper.
+Finally, we script shifting between the five test cases (no monitoring, 
+HPCPerfStats, LDMS, BMC with \texttt{amsd}, and BMC without \texttt{amsd}) in 
+order to ensure consistent system state.
+This script is available in the artifact appendix of this paper.
 
 % The following benchmarks were set to run using XX tasks, thus using all cores 
 % of the system. Where tasks must be mapped to a three dimentional arrangement, 
@@ -676,7 +724,7 @@ power analysis using the following values to determine the minimum number of
 runs of each benchmark are required. The Jupyter notebook used to perform power 
 analysis is included in the artifact appendix.
 
-The following parameters are used in the power analsysis:
+The following parameters are used in the power analysis:
 
 \begin{table}[h!]
 \centering
@@ -690,27 +738,37 @@ The following parameters are used in the power analsysis:
     \hline
     Power & 0.8 \\
     \hline
+    Equivalence Threshold & 0.005 \\
+    \hline
 \end{tabular}
 \caption{Parameters used for power analysis}
 \label{table:power_params}
 \end{table}
 
-These parameters indicate that if a effect exists, there is an 80\% chance it 
+These parameters indicate that if an effect exists, there is an 80\% chance it 
 will be found. Additionally, setting $\alpha$ to 5\% indicates we will tolerate a 
-maximum of 5\% chance that any result is a type I error (false positive).
+maximum of 5\% chance that any result is a type I error (false positive). Finally,
+setting the acceptable overhead to 0.005 (0.5\%) to be considered "equivalent" 
+when doing statistical testing. This is the same equivalence threshold as set 
+when creating hypotheses.
 
 \subsection{Gathering Data}
 
-Power analysis indicated that EP in size D should be run approximately 200 
-times. In size E it indicated 110 repetitions were required, except in the 
-HPCPerfStats case, where the 20 repetitions from the pilot study had already 
-achieved statistical signficance. Therefore, no additional tests of EP in the 
-HPCPerfStats case were run.
+% Power analysis indicated that EP in size D should be run approximately 200 
+% times. In size E it indicated 110 repetitions were required, except in the 
+% HPCPerfStats case, where the 20 repetitions from the pilot study had already 
+% achieved statistical signficance. Therefore, no additional tests of EP in the 
+% HPCPerfStats case were run.
 
-We then ran each test the number of times indicated. In the case of EP with 
-size E, we ran 5 tests of each case before moving to the next and repeating 
-until enough repetitions had been run. This was done in order to minimize any 
-possible effect of varing environmental conditions on the test node over time.
+% We then ran each test the number of times indicated. In the case of EP with 
+% size E, we ran 5 tests of each case before moving to the next and repeating 
+% until enough repetitions had been run. This was done in order to minimize any 
+% possible effect of varing environmental conditions on the test node over time.
+
+We run the pilot study, perform power analysis, and run the test for at least 
+the indicated number of times. Power analysis rusults can be foudn in section 
+\ref{results}. Where the pilot test has already achieved statistical 
+significance, no additional tests are run.
 
 \subsection{Analysis}
 
@@ -723,16 +781,28 @@ artifact appendix to this paper. The analysis is presented in section
 \subsection{Pilot Study}
 
 We performed a pilot study to determine how many repetitions of each experiment 
-were required for statistically significant results. For the D problem size, 
+were required for statistically significant results. 
+
+For EP with problem size D, 
 this indicated about 200 runs were required.
 
-For the E problem size, analysis indicated about 106 to 108 repetitons were 
+For EP with problem size E, analysis indicated about 106 to 108 repetitons were 
 required, except in the case of HPCPerfStats, where 20 repetitions had already 
-achieved statistical significance.
+achieved statistical significance and in the case of the BMC without 
+\texttt{amsd} helper, which achieved significance at 95 repitions.
+
+HPL required 125 runs, except for the BMC without \texttt{amsd}, which achieved 
+statistical significance during our 20-sample pilot test.
+
+Finally, for SP with problem size C, analysis indicated 110 runs would be 
+required for statisitical significance.
 
 \subsection{Full Study}
 
-Our full study showed the following results, organized by test case:
+Our full study showed the following results, organized by test case. Overhead is
+the percent slower that the test ran under the experimental condition. A positive 
+number indicates the job slowed by that much, while a negative number indicates 
+the job ran faster under the test condition.
 
 \begin{table}[h!]
 \centering
@@ -744,13 +814,17 @@ Our full study showed the following results, organized by test case:
     \hline
     EP, size E & 2.03\% & 20 & 0.007 & 0.981 \\ 
     \hline
+    HPL & 0.074\% & 125 & 0.456 & 1.47e-5 \\
+    \hline
+    SP, size C & -0.185\% & 200 & 0.430 & 0.092 \\
+    \hline
 \end{tabular}
 \caption{Summary of results for HPCPerfStats}
 \label{table:results_HPCPerfStats}
 \end{table}
 
 These results indicate a statistically significant impact of running 
-HPCPerfStats in all cases.
+HPCPerfStats on EP, but not on HPL or SP.
 
 \begin{table}[h!]
 \centering
@@ -762,13 +836,39 @@ HPCPerfStats in all cases.
     \hline
     EP, size E & 0.05\% & 110 & 0.859 & 0.047 \\ 
     \hline
+    HPL & 0.09\% & 125 & 0.350 & 2.69e-5 \\
+    \hline
+    SP, size C & -0.073\% & 200 & 0.758 & 0.035 \\
+    \hline
 \end{tabular}
 \caption{Summary of results for LDMS}
 \label{table:results_LDMS}
 \end{table}
 
-These results indicate that running LDMS is within our bound for being 
+The results in Table \ref{table:results_LDMS} indicate that running LDMS is within our bound for being 
 considered equivalent to no monitoring in all cases.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c | c |} 
+    \hline
+    Test case & Overhead & test cases run & p (T-test) & p (TOST) \\ 
+    \hline
+    EP, size D & -0.11\% & 200 & 0.61 & 0.040 \\ 
+    \hline
+    EP, size E & 0.031\% & 95 & 0.91 & 0.038 \\ 
+    \hline
+    HPL & 0.015\% & 20 & 0.32 & 3.55e-29 \\
+    \hline
+    SP, size C & 0.110 & 200 & 0.655 & 0.054 \\
+    \hline
+\end{tabular}
+\caption{Summary of results for BMC without \texttt{amsd} helper}
+\end{table}
+
+These results indicate that the impact of BMC-based monitoring is within our 
+predetermined bound for being considered equivalent to no monitoring when not 
+using the \texttt{amsd} helper daemon.
 
 \begin{table}[h!]
 \centering
@@ -780,13 +880,20 @@ considered equivalent to no monitoring in all cases.
     \hline
     EP, size E & 0.04\% & 110 & 0.869 & 0.036 \\ 
     \hline
+    HPL & 0.27\% & 125 & 0.030 & 0.032 \\
+    \hline
+    SP, size C & -0.09\% & 200 & 0.695 & 0.044 \\
+    \hline
 \end{tabular}
-\caption{Summary of results for BMC}
+\caption{Summary of results for BMC with \texttt{amsd} helper}
 \label{table:results_BMC}
 \end{table}
 
-These results indicate that the impact of BMC-based monitoring is within our 
-predetermined bound for being considered equivalent to no monitoring.
+When using the \texttt{amsd} helper daemon, the impact is within the 
+pre-determined bound in all cases. We also observe that for HPL, the overhead is 
+approximately one-quarter of one percent and that this difference is statistically 
+significant (p=0.03). However, we also observe that the TOST indicates the overhead
+is within our pre-configured acceptable bound (p=0.032).
 
 % E job size, 20 repeats
 % HPCPerfStats: ep_test: mops_total: 20/20 experimenatl/base samples
@@ -923,17 +1030,219 @@ predetermined bound for being considered equivalent to no monitoring.
 %     experimental: mean: 799.9019999999999, stddev: 14.947272223020855
 %     difference: 0.037677895604271906%
 
+% TODO: Add these results to paper
+% dict_keys(['hpl_test'])
+% BMC_no_helper: hpl_test: gflops: 20/20 experimental/base samples
+%     t=1.0018325102400576 
+%     p-value, different=0.3227615999941924
+%     p-value, equivalent=3.548887434320456e-29 (lower: 3.548887434320456e-29, upper: 3.7058719335550224e-30)
+%     baseline:     mean: 11.704749999999999, stddev: 0.004592112803493169
+%     experimental: mean: 11.702950000000001, stddev: 0.006344091739563577
+%     difference: -0.015378372028429326%
+% BMC_no_helper: hpl_test: runtime: 20/20 experimental/base samples
+%     t=-1.0789261206488865 
+%     p-value, different=0.2874217507595702
+%     p-value, equivalent=4.7682292668154544e-29 (lower: 4.132731023128942e-30, upper: 4.7682292668154544e-29)
+%     baseline:     mean: 606.5345, stddev: 0.2332268209276137
+%     experimental: mean: 606.6355, stddev: 0.3348204742843661
+%     difference: 0.016651979401006718%
+
+% dict_keys(['ep_test']) - size E
+% BMC_no_helper: ep_test: mops_total: 95/95 experimental/base samples
+%     t=0.11890678313981341 
+%     p-value, different=0.9054761664282698
+%     p-value, equivalent=0.037513094987191374 (lower: 0.037513094987191374, upper: 0.021983501286628213)
+%     baseline:     mean: 2756.5174736842105, stddev: 50.75502472337453
+%     experimental: mean: 2755.659052631579, stddev: 48.19767930804801
+%     difference: -0.031141505933722155%
+% BMC_no_helper: ep_test: mops_process: 95/95 experimental/base samples
+%     t=0.11921597107148565 
+%     p-value, different=0.9052315471808922
+%     p-value, equivalent=0.03753302004322064 (lower: 0.03753302004322064, upper: 0.021964368260208388)
+%     baseline:     mean: 49.2238947368421, stddev: 0.9059700177876714
+%     experimental: mean: 49.20852631578947, stddev: 0.8610164964750769
+%     difference: -0.0312214649710058%
+% BMC_no_helper: ep_test: runtime: 95/95 experimental/base samples
+%     t=-0.10214651072415026 
+%     p-value, different=0.9187492505613462
+%     p-value, equivalent=0.0408318744336329 (lower: 0.026045255013010245, upper: 0.0408318744336329)
+%     baseline:     mean: 798.0334736842107, stddev: 15.175618864926658
+%     experimental: mean: 798.2534736842103, stddev: 14.343653778692223
+%     difference: 0.02756776592140072%
+
+% dict_keys(['ep_test']) - size D
+% BMC_no_helper: ep_test: mops_total: 200/200 experimental/base samples
+%     t=-0.499878068658745 
+%     p-value, different=0.6174371837276953
+%     p-value, equivalent=0.03984348020656295 (lower: 0.003053233627572878, upper: 0.03984348020656295)
+%     baseline:     mean: 2747.1533, stddev: 55.11586410562754
+%     experimental: mean: 2750.19565, stddev: 65.82953358924473
+%     difference: 0.11074554885598009%
+% BMC_no_helper: ep_test: mops_process: 200/200 experimental/base samples
+%     t=-0.5005952586337845 
+%     p-value, different=0.616932703855284
+%     p-value, equivalent=0.03988424095428762 (lower: 0.0030444800374868873, upper: 0.03988424095428762)
+%     baseline:     mean: 49.056450000000005, stddev: 0.9839313479608222
+%     experimental: mean: 49.11085, stddev: 1.1755555186804236
+%     difference: 0.1108926552981188%
+% BMC_no_helper: ep_test: runtime: 200/200 experimental/base samples
+%     t=0.39423926398474635 
+%     p-value, different=0.6936155507599866
+%     p-value, equivalent=0.040399480940898805 (lower: 0.040399480940898805, upper: 0.005748446568614455)
+%     baseline:     mean: 50.0503, stddev: 1.0309398188061223
+%     experimental: mean: 50.0043, stddev: 1.2831260694101727
+%     difference: -0.09190754101373894%
+
+% dict_keys(['hpl_test'])
+% HPCPerfStats: hpl_test: gflops: 125/125 experimental/base samples
+%     t=0.747288409914747 
+%     p-value, different=0.45559742193538527
+%     p-value, equivalent=1.4711047384003893e-05 (lower: 1.4711047384003893e-05, upper: 1.2968089275015469e-08)
+%     baseline:     mean: 11.678655999999998, stddev: 0.0858836519018609
+%     experimental: mean: 11.669936000000003, stddev: 0.09750952724734135
+%     difference: -0.07466612596513636%
+% HPCPerfStats: hpl_test: runtime: 125/125 experimental/base samples
+%     t=-0.7438423589396809 
+%     p-value, different=0.4576760061513888
+%     p-value, equivalent=2.6387096793569433e-05 (lower: 2.802077189616699e-08, upper: 2.6387096793569433e-05)
+%     baseline:     mean: 607.9282400000001, stddev: 4.598922493628262
+%     experimental: mean: 608.3935999999999, stddev: 5.232877357630314
+%     difference: 0.07654850842260676%
+% dict_keys(['hpl_test'])
+% LDMS: hpl_test: gflops: 125/125 experimental/base samples
+%     t=0.936914590148063 
+%     p-value, different=0.3497139744483435
+%     p-value, equivalent=2.6895121486234734e-05 (lower: 2.6895121486234734e-05, upper: 3.789348095447888e-09)
+%     baseline:     mean: 11.678655999999998, stddev: 0.0858836519018609
+%     experimental: mean: 11.667816, stddev: 0.09603610854256858
+%     difference: -0.09281889970899207%
+% LDMS: hpl_test: runtime: 125/125 experimental/base samples
+%     t=-0.925180423816578 
+%     p-value, different=0.3557714371338751
+%     p-value, equivalent=4.3888372973320296e-05 (lower: 8.227611468387008e-09, upper: 4.3888372973320296e-05)
+%     baseline:     mean: 607.9282400000001, stddev: 4.598922493628262
+%     experimental: mean: 608.50064, stddev: 5.129748491924338
+%     difference: 0.0941558497101405%
+% dict_keys(['hpl_test'])
+% BMC_with_helper: hpl_test: gflops: 125/125 experimental/base samples
+%     t=2.1846665514925214 
+%     p-value, different=0.029849891238519267
+%     p-value, equivalent=0.032287956112552946 (lower: 0.032287956112552946, upper: 1.016181142891127e-09)
+%     baseline:     mean: 11.678655999999998, stddev: 0.0858836519018609
+%     experimental: mean: 11.647087999999998, stddev: 0.1360691010332618
+%     difference: -0.2703050762005495%
+% BMC_with_helper: hpl_test: runtime: 125/125 experimental/base samples
+%     t=-2.181593009439708 
+%     p-value, different=0.030078920917937967
+%     p-value, equivalent=0.04308355450507502 (lower: 2.1837508380006135e-09, upper: 0.04308355450507502)
+%     baseline:     mean: 607.9282400000001, stddev: 4.598922493628262
+%     experimental: mean: 609.6266400000001, stddev: 7.348759889287445
+%     difference: 0.2793750788744396%
+
+% dict_keys(['sp_test'])
+% HPCPerfStats: sp_test: mops_total: 200/200 experimental/base samples
+%     t=-0.7889905353587662 
+%     p-value, different=0.4305872727149077
+%     p-value, equivalent=0.09167455881252767 (lower: 0.0019037594706096852, upper: 0.09167455881252767)
+%     baseline:     mean: 5217.51625, stddev: 125.1144830722547
+%     experimental: mean: 5227.2168, stddev: 120.1168364375286
+%     difference: 0.18592275587067844%
+% HPCPerfStats: sp_test: mops_process: 200/200 experimental/base samples
+%     t=-0.7883128617045346 
+%     p-value, different=0.430982998918318
+%     p-value, equivalent=0.0915629153116439 (lower: 0.0019077840121424557, upper: 0.0915629153116439)
+%     baseline:     mean: 106.4799, stddev: 2.5535675025344444
+%     experimental: mean: 106.6777, stddev: 2.4511349840431063
+%     difference: 0.18576275898080377%
+% HPCPerfStats: sp_test: runtime: 200/200 experimental/base samples
+%     t=0.7889616244958336 
+%     p-value, different=0.4306041508334654
+%     p-value, equivalent=0.09959848088616104 (lower: 0.09959848088616104, upper: 0.00220301897886533)
+%     baseline:     mean: 278.0928, stddev: 6.82015323581516
+%     experimental: mean: 277.5641, stddev: 6.545911868487079
+%     difference: -0.19011639280125728%
+% dict_keys(['sp_test'])
+% LDMS: sp_test: mops_total: 200/200 experimental/base samples
+%     t=-0.3082305947370374 
+%     p-value, different=0.7580681282371031
+%     p-value, equivalent=0.03452529360933771 (lower: 0.0075721507097317635, upper: 0.03452529360933771)
+%     baseline:     mean: 5217.51625, stddev: 125.1144830722547
+%     experimental: mean: 5221.2891500000005, stddev: 119.00654668873267
+%     difference: 0.07231218494050393%
+% LDMS: sp_test: mops_process: 200/200 experimental/base samples
+%     t=-0.30841178655979606 
+%     p-value, different=0.7579303711277499
+%     p-value, equivalent=0.03455331579982178 (lower: 0.0075722902423251935, upper: 0.03455331579982178)
+%     baseline:     mean: 106.4799, stddev: 2.5535675025344444
+%     experimental: mean: 106.55695, stddev: 2.428933345627253
+%     difference: 0.07236107471926612%
+% LDMS: sp_test: runtime: 200/200 experimental/base samples
+%     t=0.3247034697835379 
+%     p-value, different=0.7455761060475458
+%     p-value, equivalent=0.03961082619970567 (lower: 0.03961082619970567, upper: 0.008221796973722734)
+%     baseline:     mean: 278.0928, stddev: 6.82015323581516
+%     experimental: mean: 277.8762, stddev: 6.483598581035072
+%     difference: -0.07788766915217801%
+% dict_keys(['sp_test'])
+% BMC_with_helper: sp_test: mops_total: 200/200 experimental/base samples
+%     t=-0.392778929343083 
+%     p-value, different=0.6946930489949574
+%     p-value, equivalent=0.04410213256235387 (lower: 0.0065054586028545245, upper: 0.04410213256235387)
+%     baseline:     mean: 5217.51625, stddev: 125.1144830722547
+%     experimental: mean: 5222.3911499999995, stddev: 122.47626481558581
+%     difference: 0.09343334579935036%
+% BMC_with_helper: sp_test: mops_process: 200/200 experimental/base samples
+%     t=-0.3940023921051936 
+%     p-value, different=0.6937902829299432
+%     p-value, equivalent=0.044220299603665955 (lower: 0.006484316450463687, upper: 0.044220299603665955)
+%     baseline:     mean: 106.4799, stddev: 2.5535675025344444
+%     experimental: mean: 106.57969999999999, stddev: 2.4994207148857512
+%     difference: 0.09372660943519638%
+% BMC_with_helper: sp_test: runtime: 200/200 experimental/base samples
+%     t=0.39356597381114217 
+%     p-value, different=0.6941122563559218
+%     p-value, equivalent=0.048709583273369335 (lower: 0.048709583273369335, upper: 0.007387194231651786)
+%     baseline:     mean: 278.0928, stddev: 6.82015323581516
+%     experimental: mean: 277.8265, stddev: 6.677897030502941
+%     difference: -0.0957594011783121%
+% dict_keys(['sp_test'])
+% BMC_no_helper: sp_test: mops_total: 200/200 experimental/base samples
+%     t=0.44687515198855515 
+%     p-value, different=0.6552082747678698
+%     p-value, equivalent=0.05415603608485916 (lower: 0.05415603608485916, upper: 0.006353775753452079)
+%     baseline:     mean: 5217.51625, stddev: 125.1144830722547
+%     experimental: mean: 5211.846949999999, stddev: 127.96516329531839
+%     difference: -0.10865898117711614%
+% BMC_no_helper: sp_test: mops_process: 200/200 experimental/base samples
+%     t=0.44898557211204654 
+%     p-value, different=0.6536864351584486
+%     p-value, equivalent=0.05439408985732604 (lower: 0.05439408985732604, upper: 0.006317709733077613)
+%     baseline:     mean: 106.4799, stddev: 2.5535675025344444
+%     experimental: mean: 106.36364999999998, stddev: 2.6114858179779574
+%     difference: -0.10917553453752507%
+% BMC_no_helper: sp_test: runtime: 200/200 experimental/base samples
+%     t=-0.4477158882623195 
+%     p-value, different=0.6546018408794744
+%     p-value, equivalent=0.05941790276927592 (lower: 0.007188824475979466, upper: 0.05941790276927592)
+%     baseline:     mean: 278.0928, stddev: 6.82015323581516
+%     experimental: mean: 278.4024, stddev: 6.974563157646507
+%     difference: 0.11132974316486763%
+
+
 \section{Discussion} \label{discussion}
 
-These results lead to some interesting conclusions. We found that running 
-HPCPerfStats had a statistically significant overhead on the system in all tested 
-cases, though the degree of impact varied (0.38\% in size D, 2.0\% in size E). 
+These results lead to some interesting conclusions. In some cases, we did 
+observe meaningful overhead from running monitoring. Specifically, HPCPerfStats 
+appears to have fairly significant impact on systems. We found that running 
+HPCPerfStats had a created overhead when running 
+the EP benchmarks, though the degree of impact varied (0.38\% in size D, 2.0\% in size E). 
 In contrast, the overhead for both LDMS and BMC-based monitoring was within our 
-predefined bound for equivalence.
+predefined bound for equivalence for EP.
 
-It is unclear why HPCPerfStats has a significant impact while LDMS does not. 
+It is unclear why HPCPerfStats has a significant impact on EP while LDMS does not. 
 One theory is the number of modules performing collection - 31 for HPCPerfStats 
-(although some hardware- and software-specific modules have no data to collect) 
+(although some hardware- and software-specific modules have no source from 
+which to collect data) 
 versus LDMS's 6. Perhaps one (or more) of these modules have significant 
 system impact. Benchmarking individual modules of monitoring systems is beyond 
 the scope of this paper. However, the framework proposed within this paper 
@@ -947,16 +1256,55 @@ therorize that startup or teardown costs within the EP kernel may be masking
 the impact with problem size D. However, examining this theory is beyond the 
 scope of the current work.
 
-We confirm LDMS's statement that it runs without significant 
+In contrast, no monitoring system appears to create overhead on HPL of greater 
+than 0.5\%. In fact, BMC-based monitoring with the \texttt{amsd} daemon is the 
+only case in which there was a statistically-significant difference, and that 
+only 0.27\%. It is unclear to us why no case showed meaningful overhead with HPL. 
+We believe the most likely cause is 
+insufficient optimization on our part, leaving small portions of idle CPU time, 
+which the monitoring systems were able to use without interfering with HPL. 
+Another possibility would be that because many monitoring systems regularly 
+test against HPL, they are - at least to some degree - optimized with it as a 
+workload and therefore already written to minimize the impact.
+
+As expected, SP (which in our tests left 7 cores on the system idle) shows an effect
+within the predefined 0.5\% bound, at least in the LDMS and BMC-with-\texttt{amsd}
+cases. However, in the HPCPerfStats and BMC-without-\texttt{amsd} cases, the results
+were not statistically significant and we can draw no conclusions. With 7 idle cores,
+we would have expected that monitoring had plenty of CPU to run in and that the results 
+for SP would clearly indicate this. We hypothesize that certain tasks related to monitoring
+are both relatively expensive and either can only run on certain cores  - for example, CPU0.
+If SLURM also assigned tasks to these cores, monitoring might interfere with the 
+workload, despite having free CPUs on which to run. Alternatively, certain monitoring 
+tasks may have cross-core effects that influence workloads, even though there is unallocated 
+CPU capacity.
+
+The results on a per-benchmark basis do indicate that monitoring systems can 
+have significant overhead. They also show that the overhead is significantly 
+impacted by the combination of monitoring system, workload, and workload 
+configuration. In turn, this emphasizes the need for administrators considering 
+a monitoring system to test it with workloads/benchmarks that reflect their 
+system and uses. What is right for one system may not be right for another. 
+In turn, a framework like the one laid out in this work is therefore critical 
+to allow systems administrators to systematically evaluate monitoring for each 
+system.
+
+Shifting from individual benchmarks, we are able to draw some conclusions about 
+the monitoring systems themselves. We confirm LDMS's statement that it runs without significant 
 overhead on the system. Although from a 
 statistcal point of view, we can only say that the overhead is less than 0.5\%,
-the measured value of 0.11\% is significantly smaller and further statistical 
+the measured values were significantly smaller in all cases we tested and further statistical 
 tests could more precisely define the overhead.
 
 Finally, we confirm the commonly-accpeted theory that monitoring via the BMC 
 does not have any meaningful overhead (with meaninful overhead defined as 
-0.5\% or greater), as the two one-sided T-tests indicate the overhead is less 
-than this threshold with p=0.036 for EP with problem size E.
+0.5\% or greater). The largest observed value (and the only one measured as 
+statistically dsignificant) was a 0.27\% impact on HPL when 
+running monitoring via the BMC with the OS-based helper daemon. This indicates 
+that the addition of an OS-level daemon can create overhead, even when that daemon is 
+only communicating with the BMC. However, without that daemon running, BMC-based 
+monitoring will contribute negligible overhead and may be a good choice for 
+overhead-sensitive systems that nonetheless wish to monitor their systems.
 
 \section{Future Work} \label{futurework}
 
@@ -983,7 +1331,7 @@ various levels of reporting in order to encourage reproducability. Further, it
 contributes a refernce implementation of this methodology in order to assist 
 future usage by others. It then 
 applies this methodology to measure overhead for HPCPerfStats, LDMS and 
-BMC-based monitoring. Findings include a 2.0\% overhead for HPCPerfStats, 
+BMC-based monitoring. Findings include an up to 2.0\% overhead for HPCPerfStats, 
 whereas LDMS and BMC-based monitoring are both demonstrated to have an overhead 
 of less than 0.5\%. This provides the first - to our knowledge - meaningful 
 confirmation of the common-acepted theory that BMC-based monitoring has no 

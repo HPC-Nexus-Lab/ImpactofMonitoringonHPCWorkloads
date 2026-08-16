@@ -1,0 +1,138 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "2e9d443e-4452-4165-8f26-a5d96b53a58f",
+    "time_start": "20260721T130911-0400",
+    "time_start_unix": 1784653751.1230924,
+    "time_end": "20260721T130911-0400",
+    "time_end_unix": 1784653751.5343893,
+    "time_elapsed": 0.4112968444824219,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=S -n ep_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-fd069cd2.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.9.3",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 1,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 1,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "compile_wait",
+          "fail_reason": "build error: build job failed with exit code: 2",
+          "filename": "/home/steve/phd/reframe/tests/ep.py",
+          "fixture": false,
+          "job_completion_time": null,
+          "job_completion_time_unix": null,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "fail",
+          "run_index": 0,
+          "scheduler": "local",
+          "session_uuid": "2e9d443e-4452-4165-8f26-a5d96b53a58f",
+          "time_compile": 0.2704281806945801,
+          "time_performance": null,
+          "time_run": null,
+          "time_sanity": null,
+          "time_setup": 0.0187985897064209,
+          "time_total": 0.2922642230987549,
+          "uuid": "2e9d443e-4452-4165-8f26-a5d96b53a58f:0:0",
+          "fail_info": {
+            "exc_type": "BuildError",
+            "exc_value": "build job failed with exit code: 2",
+            "traceback": [
+              "  File \"/home/steve/phd/.venv/lib64/python3.9/site-packages/reframe/frontend/executors/__init__.py\", line 422, in _safe_call\n    return fn(*args, **kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.9/site-packages/reframe/core/hooks.py\", line 109, in _fn\n    func(obj, *args, **kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.9/site-packages/reframe/core/pipeline.py\", line 2102, in compile_wait\n    raise BuildError(\n"
+            ]
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [],
+          "job_submit_time": null,
+          "jobid": null,
+          "system": "generic",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "ep_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "./ep_test",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "b1627137",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "ep_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 1,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/generic/default/builtin/ep_test",
+          "perfvalues": {},
+          "postbuild_cmds": [],
+          "postrun_cmds": [
+            "~/phd/reframe/enable_procs.sh"
+          ],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [
+            "pwd",
+            "whoami",
+            "~/phd/reframe/disable_procs.sh 56"
+          ],
+          "problem_size": "S",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "ep_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/generic/default/builtin/ep_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "ep_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

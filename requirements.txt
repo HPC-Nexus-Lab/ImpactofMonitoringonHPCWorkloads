@@ -2,4 +2,5 @@ scipy
 numpy
 jupyter
 reframe-hpc
-statsmodels # For t-test pre-indication
+# Statsmodels requires the nightly for power testing Mann-Whitney U test
+git+https://github.com/statsmodels/statsmodels

@@ -1,0 +1,150 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "6ae1cbf6-8a7c-4c9c-9be1-25fbfd4a437f",
+    "time_start": "20260729T174537-0400",
+    "time_start_unix": 1785361537.4178655,
+    "time_end": "20260729T174544-0400",
+    "time_end_unix": 1785361544.3944466,
+    "time_elapsed": 6.97658109664917,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=B -S r_num_tasks=56 -n dt_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-bi9oviba.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": null,
+          "fail_reason": null,
+          "filename": "/home/steve/phd/reframe/tests/dt.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-29T17:45:44-04:00",
+          "job_completion_time_unix": 1785361544.1128747,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "pass",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "6ae1cbf6-8a7c-4c9c-9be1-25fbfd4a437f",
+          "time_compile": 1.1093554496765137,
+          "time_performance": 0.020307302474975586,
+          "time_run": 5.719421148300171,
+          "time_sanity": 0.021578073501586914,
+          "time_setup": 0.041357994079589844,
+          "time_total": 6.968672513961792,
+          "uuid": "6ae1cbf6-8a7c-4c9c-9be1-25fbfd4a437f:0:0",
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/dt_test",
+          "job_exitcode": null,
+          "job_nodelist": [
+            "worker"
+          ],
+          "job_submit_time": 1785361538.694199,
+          "jobid": "1611",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "dt_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/dt.B.x BH",
+          "executable_opts": [],
+          "extra_resources": {},
+          "graph": "BH",
+          "hashcode": "6234c65d",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "dt_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "perfvalues": {
+            "phd_slurm:default:mops_total": [
+              101.12,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:mops_process": [
+              1.81,
+              0,
+              null,
+              null,
+              "Mop/s",
+              "pass"
+            ],
+            "phd_slurm:default:runtime": [
+              1.4,
+              0,
+              null,
+              null,
+              "runtime",
+              "pass"
+            ]
+          },
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "problem_size": "B",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "dt_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/dt_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "dt_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

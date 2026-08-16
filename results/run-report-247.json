@@ -1,0 +1,167 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "4b687f87-9fec-4354-9af0-e6b64c1ddf0b",
+    "time_start": "20260729T174043-0400",
+    "time_start_unix": 1785361243.6367338,
+    "time_end": "20260729T174047-0400",
+    "time_end_unix": 1785361247.7362173,
+    "time_elapsed": 4.099483489990234,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=D -n is_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-l5jj_rgm.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 1,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 1,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "sanity",
+          "fail_reason": "sanity error: pattern 'Verification\\\\s+=\\\\s+SUCCESSFUL' not found in 'rfm_job.out'",
+          "filename": "/home/steve/phd/reframe/tests/is.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-29T17:40:47-04:00",
+          "job_completion_time_unix": 1785361247.5543628,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "fail",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "4b687f87-9fec-4354-9af0-e6b64c1ddf0b",
+          "time_compile": 1.515634536743164,
+          "time_performance": null,
+          "time_run": 2.361072301864624,
+          "time_sanity": 0.025011539459228516,
+          "time_setup": 0.05645346641540527,
+          "time_total": 4.0527708530426025,
+          "uuid": "4b687f87-9fec-4354-9af0-e6b64c1ddf0b:0:0",
+          "fail_info": {
+            "exc_type": "SanityError",
+            "exc_value": "pattern 'Verification\\\\s+=\\\\s+SUCCESSFUL' not found in 'rfm_job.out'",
+            "traceback": [
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/frontend/executors/__init__.py\", line 422, in _safe_call\n    return fn(*args, **kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/hooks.py\", line 109, in _fn\n    func(obj, *args, **kwargs)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/pipeline.py\", line 2903, in sanity\n    self.check_sanity()\n    ~~~~~~~~~~~~~~~~~^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/pipeline.py\", line 2967, in check_sanity\n    success = sn.evaluate(self.sanity_patterns)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/utility/sanity.py\", line 966, in evaluate\n    return expr.evaluate(cache=cache)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/deferrable.py\", line 78, in evaluate\n    ret = ret.evaluate()\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/deferrable.py\", line 78, in evaluate\n    ret = ret.evaluate()\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/deferrable.py\", line 73, in evaluate\n    ret = self._fn(*fn_args, **fn_kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/utility/sanity.py\", line 466, in assert_found_s\n    raise SanityError(_format(error_msg, patt, string))\n"
+            ]
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [
+            "None"
+          ],
+          "job_submit_time": 1785361245.5295315,
+          "jobid": "1605",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "is_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/is.D.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "28fa91c2",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [
+            "mpi/mpich-x86_64"
+          ],
+          "name": "is_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/is_test",
+          "perfvalues": {
+            "phd_slurm:default:mops_total": [
+              null,
+              0,
+              null,
+              null,
+              "Mop/s",
+              null
+            ],
+            "phd_slurm:default:mops_process": [
+              null,
+              0,
+              null,
+              null,
+              "Mop/s",
+              null
+            ],
+            "phd_slurm:default:runtime": [
+              null,
+              0,
+              null,
+              null,
+              "runtime",
+              null
+            ]
+          },
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "problem_size": "D",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "is_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/is_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "is_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

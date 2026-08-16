@@ -1,0 +1,130 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "deccc7f0-a507-4c23-8e36-42fdab3c02ab",
+    "time_start": "20260729T203132-0400",
+    "time_start_unix": 1785371492.621308,
+    "time_end": "20260729T203243-0400",
+    "time_end_unix": 1785371563.7262979,
+    "time_elapsed": 71.10498976707458,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=E -S r_num_tasks=56 -n ep_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-eo9d4e4z.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 1,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 1,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "run",
+          "fail_reason": "aborted due to KeyboardInterrupt",
+          "filename": "/home/steve/phd/reframe/tests/ep.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-29T20:32:43-04:00",
+          "job_completion_time_unix": 1785371563.7226496,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "abort",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "deccc7f0-a507-4c23-8e36-42fdab3c02ab",
+          "time_compile": 1.1409838199615479,
+          "time_performance": null,
+          "time_run": 63.59466862678528,
+          "time_sanity": null,
+          "time_setup": 0.03582000732421875,
+          "time_total": 64.86207985877991,
+          "uuid": "deccc7f0-a507-4c23-8e36-42fdab3c02ab:0:0",
+          "fail_info": {
+            "exc_type": "AbortTaskError",
+            "exc_value": ": ",
+            "traceback": null
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [
+            "worker"
+          ],
+          "job_submit_time": 1785371493.9454427,
+          "jobid": "1646",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "ep_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/ep.E.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "b1627137",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "ep_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/ep_test",
+          "perfvalues": {},
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "problem_size": "E",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "ep_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": 900.0,
+          "unique_name": "ep_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

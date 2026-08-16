@@ -13,3 +13,4 @@ reframe/.results
 reframe/tests/npb
 reframe/.results.local
 reframe/tests/hpl
+experimental_code/reframe/tests/hpl

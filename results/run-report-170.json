@@ -1,0 +1,132 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "84668171-5869-4385-9dc4-b8d150baba00",
+    "time_start": "20260728T154143-0400",
+    "time_start_unix": 1785267703.1294441,
+    "time_end": "20260728T154216-0400",
+    "time_end_unix": 1785267736.2620273,
+    "time_elapsed": 33.132583141326904,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -n hpl_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-1c54pksd.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 1,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 1,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "run",
+          "fail_reason": "aborted due to KeyboardInterrupt",
+          "filename": "/home/steve/phd/reframe/tests/hpl.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-28T15:42:16-04:00",
+          "job_completion_time_unix": 1785267736.2603304,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "abort",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "84668171-5869-4385-9dc4-b8d150baba00",
+          "time_compile": 17.47446036338806,
+          "time_performance": null,
+          "time_run": 12.5986967086792,
+          "time_sanity": null,
+          "time_setup": 0.05535316467285156,
+          "time_total": 30.210289478302002,
+          "uuid": "84668171-5869-4385-9dc4-b8d150baba00:0:0",
+          "fail_info": {
+            "exc_type": "AbortTaskError",
+            "exc_value": ": ",
+            "traceback": null
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [],
+          "job_submit_time": 1785267720.7974358,
+          "jobid": "1416",
+          "system": "phd_slurm",
+          "arch": "Linux_Intel64",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "hpl_test",
+          "env_vars": {
+            "UCX_TLS": "sm,posix"
+          },
+          "exclusive_access": false,
+          "executable": "bin/Linux_Intel64/xhpl",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "a5edf4d3",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "hpl_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/hpl_test",
+          "perfvalues": {},
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "hpl_test",
+          "sourcepath": "",
+          "sourcesdir": "hpl/",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/hpl_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": 300.0,
+          "unique_name": "hpl_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {
+            "UCX_TLS": "sm,posix"
+          }
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

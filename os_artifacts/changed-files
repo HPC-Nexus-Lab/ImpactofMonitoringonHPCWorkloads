@@ -1,0 +1,16 @@
+[steve@worker ~]$ sudo rpm -Va
+..5....T.  c /etc/yum.repos.d/rocky.repo
+.......T.  c /etc/selinux/targeted/contexts/customizable_types
+S.5....T.  c /etc/sudoers
+.......T.    /boot/efi/EFI/BOOT/BOOTX64.EFI
+.......T.    /boot/efi/EFI/BOOT/fbx64.efi
+.......T.    /boot/efi/EFI/rocky/BOOTX64.CSV
+.......T.    /boot/efi/EFI/rocky/mmx64.efi
+.......T.    /boot/efi/EFI/rocky/shim.efi
+.......T.    /boot/efi/EFI/rocky/shimx64-rocky.efi
+.......T.    /boot/efi/EFI/rocky/shimx64.efi
+.......T.  c /etc/ssh/sshd_config
+S.5....T.    /opt/amsd/amsd.license
+
+
+# None of these were changed manually; no diffs provided

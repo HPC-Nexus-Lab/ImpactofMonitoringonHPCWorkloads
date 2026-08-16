@@ -1,0 +1,175 @@
+++ ls /sys/devices/system/cpu/cpufreq/
+++ wc -l
++ COUNT=56
++ echo 'Using 56 of 56, take 56-56 offline'
+++ python3 -c 'from numpy import linspace
+for val in linspace(1, 56-1, 56-56):
+    print(f"/sys/devices/system/cpu/cpu{int(val)}/online")
+'
++ PROCS=
+++ ls /sys/devices/system/cpu/cpu10/online /sys/devices/system/cpu/cpu11/online /sys/devices/system/cpu/cpu12/online /sys/devices/system/cpu/cpu13/online /sys/devices/system/cpu/cpu14/online /sys/devices/system/cpu/cpu15/online /sys/devices/system/cpu/cpu16/online /sys/devices/system/cpu/cpu17/online /sys/devices/system/cpu/cpu18/online /sys/devices/system/cpu/cpu19/online /sys/devices/system/cpu/cpu1/online /sys/devices/system/cpu/cpu20/online /sys/devices/system/cpu/cpu21/online /sys/devices/system/cpu/cpu22/online /sys/devices/system/cpu/cpu23/online /sys/devices/system/cpu/cpu24/online /sys/devices/system/cpu/cpu25/online /sys/devices/system/cpu/cpu26/online /sys/devices/system/cpu/cpu27/online /sys/devices/system/cpu/cpu28/online /sys/devices/system/cpu/cpu29/online /sys/devices/system/cpu/cpu2/online /sys/devices/system/cpu/cpu30/online /sys/devices/system/cpu/cpu31/online /sys/devices/system/cpu/cpu32/online /sys/devices/system/cpu/cpu33/online /sys/devices/system/cpu/cpu34/online /sys/devices/system/cpu/cpu35/online /sys/devices/system/cpu/cpu36/online /sys/devices/system/cpu/cpu37/online /sys/devices/system/cpu/cpu38/online /sys/devices/system/cpu/cpu39/online /sys/devices/system/cpu/cpu3/online /sys/devices/system/cpu/cpu40/online /sys/devices/system/cpu/cpu41/online /sys/devices/system/cpu/cpu42/online /sys/devices/system/cpu/cpu43/online /sys/devices/system/cpu/cpu44/online /sys/devices/system/cpu/cpu45/online /sys/devices/system/cpu/cpu46/online /sys/devices/system/cpu/cpu47/online /sys/devices/system/cpu/cpu48/online /sys/devices/system/cpu/cpu49/online /sys/devices/system/cpu/cpu4/online /sys/devices/system/cpu/cpu50/online /sys/devices/system/cpu/cpu51/online /sys/devices/system/cpu/cpu52/online /sys/devices/system/cpu/cpu53/online /sys/devices/system/cpu/cpu54/online /sys/devices/system/cpu/cpu55/online /sys/devices/system/cpu/cpu5/online /sys/devices/system/cpu/cpu6/online /sys/devices/system/cpu/cpu7/online /sys/devices/system/cpu/cpu8/online /sys/devices/system/cpu/cpu9/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu10/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ sudo tee /sys/devices/system/cpu/cpu11/online
++ echo 1
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu12/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu13/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu14/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu15/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu16/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu17/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu18/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu19/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu1/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu20/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu21/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu22/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ sudo tee /sys/devices/system/cpu/cpu23/online
++ echo 1
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu24/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu25/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu26/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu27/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu28/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ sudo tee /sys/devices/system/cpu/cpu29/online
++ echo 1
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu2/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu30/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu31/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu32/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu33/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu34/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu35/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu36/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu37/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu38/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu39/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu3/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu40/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu41/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu42/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu43/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu44/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu45/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu46/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu47/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu48/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu49/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu4/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu50/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu51/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu52/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu53/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu54/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu55/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu5/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu6/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu7/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu8/online
++ for FILE in $( ls /sys/devices/system/cpu/cpu*/online )
++ echo 1
++ sudo tee /sys/devices/system/cpu/cpu9/online

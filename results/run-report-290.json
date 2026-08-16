@@ -1,0 +1,146 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "1a8a9f6a-209c-4454-bc6b-afc7a751b9c3",
+    "time_start": "20260729T215520-0400",
+    "time_start_unix": 1785376520.5910184,
+    "time_end": "20260729T215520-0400",
+    "time_end_unix": 1785376520.988641,
+    "time_elapsed": 0.39762258529663086,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S r_num_tasks=56 -n hpl_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-9zmarz7m.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 1,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 1,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "compile",
+          "fail_reason": "environ error: could not execute module operation: command 'modulecmd python show mpi/mpich-x86_64' failed with exit code 0:\n--- stdout ---\n_mlstatus = False\n\n--- stdout ---\n--- stderr ---\nERROR: Unable to locate a modulefile for 'mpi/mpich-x86_64'\n\n--- stderr ---",
+          "filename": "/home/steve/phd/reframe/tests/hpl.py",
+          "fixture": false,
+          "job_completion_time": null,
+          "job_completion_time_unix": null,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "fail",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "1a8a9f6a-209c-4454-bc6b-afc7a751b9c3",
+          "time_compile": 0.30146241188049316,
+          "time_performance": null,
+          "time_run": null,
+          "time_sanity": null,
+          "time_setup": 0.06708478927612305,
+          "time_total": 0.37616801261901855,
+          "uuid": "1a8a9f6a-209c-4454-bc6b-afc7a751b9c3:0:0",
+          "fail_info": {
+            "exc_type": "EnvironError",
+            "exc_value": "could not execute module operation: command 'modulecmd python show mpi/mpich-x86_64' failed with exit code 0:\n--- stdout ---\n_mlstatus = False\n\n--- stdout ---\n--- stderr ---\nERROR: Unable to locate a modulefile for 'mpi/mpich-x86_64'\n\n--- stderr ---",
+            "traceback": [
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/frontend/executors/__init__.py\", line 422, in _safe_call\n    return fn(*args, **kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/hooks.py\", line 109, in _fn\n    func(obj, *args, **kwargs)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/pipeline.py\", line 2655, in compile\n    self._build_job.prepare(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        build_commands, environs,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<2 lines>...\n        trap_errors=True\n        ^^^^^^^^^^^^^^^^\n    )\n    ^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/schedulers/__init__.py\", line 621, in prepare\n    builder.write(runtime.emit_loadenv_commands(*environs))\n                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/runtime.py\", line 269, in emit_loadenv_commands\n    _, commands = loadenv(*environs)\n                  ~~~~~~~^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/runtime.py\", line 255, in loadenv\n    commands += _load_cmds_tracked(**mod)\n                ~~~~~~~~~~~~~~~~~~^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/runtime.py\", line 235, in _load_cmds_tracked\n    load_seq = modules_system.load_module(**module, force=True)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/modules.py\", line 268, in load_module\n    ret.append((m, self._load_module(m, collection, path, force)))\n                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/modules.py\", line 282, in _load_module\n    conflict_list = self._backend.conflicted_modules(module)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/modules.py\", line 707, in conflicted_modules\n    output = self.execute_with_path('show', str(module), path=module.path)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/modules.py\", line 468, in execute_with_path\n    return self.execute(cmd, *args)\n           ~~~~~~~~~~~~^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/modules.py\", line 462, in execute\n    raise EnvironError('could not execute module operation') from e\n"
+            ]
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [],
+          "job_submit_time": null,
+          "jobid": null,
+          "system": "phd_slurm",
+          "arch": "Linux_Intel64",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "hpl_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "./hpl_test",
+          "executable_opts": [
+            "--dat",
+            "./HPL.dat"
+          ],
+          "extra_resources": {},
+          "hashcode": "a5edf4d3",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [
+            "mpi/mpich-x86_64"
+          ],
+          "name": "hpl_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 1,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/hpl_test",
+          "perfvalues": {},
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "hpl_test",
+          "sourcepath": "",
+          "sourcesdir": "hpl/",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/hpl_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": 900.0,
+          "unique_name": "hpl_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

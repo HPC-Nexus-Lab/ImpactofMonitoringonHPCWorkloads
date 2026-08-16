@@ -1,0 +1,21 @@
+   =========================================
+   =      NAS Parallel Benchmarks 3.4      =
+   =      MPI/Fortran/C                    =
+   =========================================
+
+cd EP; make CLASS=D F08=def
+make[1]: Entering directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test_d2c2af15/EP'
+make[2]: Entering directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test_d2c2af15/sys'
+cc -DFORTRAN_REC_SIZE=0 -o setparams setparams.c
+make[2]: Leaving directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test_d2c2af15/sys'
+../sys/setparams ep D 
+mpif90 -c  -O3 ep_data.f90
+cp mpinpb_def.f90 mpinpb.f90
+mpif90 -c  -O3 mpinpb.f90
+mpif90 -c  -O3 ep.f90
+mpif90 -c  -O3 verify.f90
+cd ../common; mpif90 -c  -O3 print_results.f90
+cd ../common; mpif90 -c  -O3 randi8.f90
+cd ../common; mpif90 -c  -O3 timers.f90
+mpif90 -O3 -o ../bin/ep.D.x ep.o ep_data.o verify.o mpinpb.o ../common/print_results.o ../common/randi8.o ../common/timers.o 
+make[1]: Leaving directory '/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test_d2c2af15/EP'

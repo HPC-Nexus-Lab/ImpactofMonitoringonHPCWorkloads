@@ -1,0 +1,172 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "615f0592-597e-4df2-bb66-dab8e0a42973",
+    "time_start": "20260721T131403-0400",
+    "time_start_unix": 1784654043.1602695,
+    "time_end": "20260721T131407-0400",
+    "time_end_unix": 1784654047.3716617,
+    "time_elapsed": 4.211392164230347,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -S problem_size=S -n ep_test --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-_2v8v4zz.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 1,
+    "num_aborted": 0,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 1,
+      "num_aborted": 0,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "sanity",
+          "fail_reason": "sanity error: rfm_job.out: No such file or directory",
+          "filename": "/home/steve/phd/reframe/tests/ep.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-21T13:14:07-04:00",
+          "job_completion_time_unix": 1784654047.2243547,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "fail",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "615f0592-597e-4df2-bb66-dab8e0a42973",
+          "time_compile": 1.7767930030822754,
+          "time_performance": null,
+          "time_run": 2.254927635192871,
+          "time_sanity": 0.012576818466186523,
+          "time_setup": 0.051839590072631836,
+          "time_total": 4.184024333953857,
+          "uuid": "615f0592-597e-4df2-bb66-dab8e0a42973:0:0",
+          "fail_info": {
+            "exc_type": "SanityError",
+            "exc_value": "rfm_job.out: No such file or directory",
+            "traceback": [
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/frontend/executors/__init__.py\", line 422, in _safe_call\n    return fn(*args, **kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/hooks.py\", line 109, in _fn\n    func(obj, *args, **kwargs)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/pipeline.py\", line 2903, in sanity\n    self.check_sanity()\n    ~~~~~~~~~~~~~~~~~^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/pipeline.py\", line 2967, in check_sanity\n    success = sn.evaluate(self.sanity_patterns)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/utility/sanity.py\", line 966, in evaluate\n    return expr.evaluate(cache=cache)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/deferrable.py\", line 78, in evaluate\n    ret = ret.evaluate()\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/core/deferrable.py\", line 73, in evaluate\n    ret = self._fn(*fn_args, **fn_kwargs)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/utility/sanity.py\", line 441, in assert_found\n    with _open(filename, 'rt', encoding=encoding) as fp:\n         ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+              "  File \"/usr/lib64/python3.14/contextlib.py\", line 141, in __enter__\n    return next(self.gen)\n",
+              "  File \"/home/steve/phd/.venv/lib64/python3.14/site-packages/reframe/utility/sanity.py\", line 41, in _open\n    raise SanityError(f'{filename}: {e.strerror}')\n"
+            ]
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [
+            "None"
+          ],
+          "job_submit_time": 1784654045.1220014,
+          "jobid": "4",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "ep_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/ep.S.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "b1627137",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "ep_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 56,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/ep_test",
+          "perfvalues": {
+            "phd_slurm:default:mops_total": [
+              null,
+              0,
+              null,
+              null,
+              "Mop/s",
+              null
+            ],
+            "phd_slurm:default:mops_process": [
+              null,
+              0,
+              null,
+              null,
+              "Mop/s",
+              null
+            ],
+            "phd_slurm:default:runtime": [
+              null,
+              0,
+              null,
+              null,
+              "runtime",
+              null
+            ]
+          },
+          "postbuild_cmds": [],
+          "postrun_cmds": [
+            "~/phd/reframe/enable_procs.sh"
+          ],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [
+            "pwd",
+            "whoami",
+            "~/phd/reframe/disable_procs.sh 56"
+          ],
+          "problem_size": "S",
+          "r_num_tasks": 56,
+          "readonly_files": [],
+          "short_name": "ep_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ep_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "ep_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

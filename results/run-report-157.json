@@ -1,0 +1,130 @@
+{
+  "session_info": {
+    "data_version": "4.2",
+    "hostname": "slurm-admin",
+    "uuid": "90fd2bee-3f76-4130-ae08-66a001c94ecd",
+    "time_start": "20260728T144839-0400",
+    "time_start_unix": 1785264519.0664155,
+    "time_end": "20260728T144852-0400",
+    "time_end_unix": 1785264532.5522354,
+    "time_elapsed": 13.485819816589355,
+    "cmdline": "/home/steve/phd/.venv/bin/reframe -C reframe/settings.py -c reframe/tests/ -n ft_test -S problem_size=C -S r_num_procs=1 --run",
+    "config_files": [
+      "<builtin>",
+      "/home/steve/phd/reframe/settings.py"
+    ],
+    "log_files": [
+      "/tmp/rfm-fhtd_wit.log"
+    ],
+    "prefix_output": "/home/steve/phd/reframe/.results/output",
+    "prefix_stage": "/home/steve/phd/reframe/.results/stage",
+    "user": "steve",
+    "version": "4.10.1",
+    "workdir": "/home/steve/phd",
+    "num_cases": 1,
+    "num_failures": 0,
+    "num_aborted": 1,
+    "num_skipped": 0
+  },
+  "runs": [
+    {
+      "num_cases": 1,
+      "num_failures": 0,
+      "num_aborted": 1,
+      "num_skipped": 0,
+      "run_index": 0,
+      "testcases": [
+        {
+          "build_jobid": null,
+          "build_stderr": "rfm_build.err",
+          "build_stdout": "rfm_build.out",
+          "dependencies_actual": [],
+          "dependencies_conceptual": [],
+          "environ": "builtin",
+          "fail_phase": "run",
+          "fail_reason": "aborted due to KeyboardInterrupt",
+          "filename": "/home/steve/phd/reframe/tests/ft.py",
+          "fixture": false,
+          "job_completion_time": "2026-07-28T14:48:52-04:00",
+          "job_completion_time_unix": 1785264532.5512831,
+          "job_stderr": "rfm_job.err",
+          "job_stdout": "rfm_job.out",
+          "partition": "default",
+          "result": "abort",
+          "run_index": 0,
+          "scheduler": "squeue",
+          "session_uuid": "90fd2bee-3f76-4130-ae08-66a001c94ecd",
+          "time_compile": 3.956803798675537,
+          "time_performance": null,
+          "time_run": 3.085627555847168,
+          "time_sanity": null,
+          "time_setup": 0.05984830856323242,
+          "time_total": 7.180373430252075,
+          "uuid": "90fd2bee-3f76-4130-ae08-66a001c94ecd:0:0",
+          "fail_info": {
+            "exc_type": "AbortTaskError",
+            "exc_value": ": ",
+            "traceback": null
+          },
+          "fail_severe": false,
+          "job_exitcode": null,
+          "job_nodelist": [
+            "worker"
+          ],
+          "job_submit_time": 1785264523.1984375,
+          "jobid": "1396",
+          "system": "phd_slurm",
+          "build_locally": true,
+          "build_time_limit": null,
+          "descr": "",
+          "display_name": "ft_test",
+          "env_vars": {},
+          "exclusive_access": false,
+          "executable": "bin/ft.C.x",
+          "executable_opts": [],
+          "extra_resources": {},
+          "hashcode": "0ea0bc95",
+          "keep_files": [],
+          "local": false,
+          "maintainers": [],
+          "max_pending_time": null,
+          "modules": [],
+          "name": "ft_test",
+          "num_cpus_per_task": 1,
+          "num_gpus_per_node": null,
+          "num_tasks": 8,
+          "num_tasks_per_core": null,
+          "num_tasks_per_node": null,
+          "num_tasks_per_socket": null,
+          "outputdir": "/home/steve/phd/reframe/.results/output/phd_slurm/default/builtin/ft_test",
+          "perfvalues": {},
+          "postbuild_cmds": [],
+          "postrun_cmds": [],
+          "prebuild_cmds": [],
+          "prefix": "/home/steve/phd/reframe/tests",
+          "prerun_cmds": [],
+          "problem_size": "C",
+          "r_num_tasks": 8,
+          "readonly_files": [],
+          "short_name": "ft_test",
+          "sourcepath": "",
+          "sourcesdir": "npb/NPB3.4-MPI",
+          "stagedir": "/home/steve/phd/reframe/.results/stage/phd_slurm/default/builtin/ft_test",
+          "strict_check": true,
+          "tags": [],
+          "time_limit": null,
+          "unique_name": "ft_test",
+          "use_multithreading": null,
+          "valid_prog_environs": [
+            "*"
+          ],
+          "valid_systems": [
+            "*"
+          ],
+          "variables": {}
+        }
+      ]
+    }
+  ],
+  "restored_cases": []
+}

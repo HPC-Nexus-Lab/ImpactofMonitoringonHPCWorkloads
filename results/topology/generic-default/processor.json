@@ -1,0 +1,58 @@
+{
+  "arch": "westmere",
+  "vendor": "GenuineIntel",
+  "model": "Intel(R) Pentium(R) Gold G6405 CPU @ 4.10GHz",
+  "platform": "x86_64",
+  "topology": {
+    "numa_nodes": [
+      "0x3"
+    ],
+    "sockets": [
+      "0x1",
+      "0x2"
+    ],
+    "cores": [
+      "0x1",
+      "0x2"
+    ],
+    "caches": [
+      {
+        "type": "L2",
+        "size": 4194304,
+        "linesize": 64,
+        "associativity": 16,
+        "num_cpus": 1,
+        "cpusets": [
+          "0x1",
+          "0x2"
+        ]
+      },
+      {
+        "type": "L1",
+        "size": 32768,
+        "linesize": 64,
+        "associativity": 8,
+        "num_cpus": 1,
+        "cpusets": [
+          "0x1",
+          "0x2"
+        ]
+      },
+      {
+        "type": "L3",
+        "size": 16777216,
+        "linesize": 64,
+        "associativity": 16,
+        "num_cpus": 1,
+        "cpusets": [
+          "0x1",
+          "0x2"
+        ]
+      }
+    ]
+  },
+  "num_cpus": 2,
+  "num_cpus_per_core": 1,
+  "num_cpus_per_socket": 1,
+  "num_sockets": 2
+}
