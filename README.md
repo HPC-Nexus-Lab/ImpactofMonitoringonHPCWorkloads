@@ -1,6 +1,6 @@
 This repository contains the artifacts from the paper "Measuring the Impact of 
 Monitoring on HPC Workloads". The histogram figures mentioned in the paper can
-be found in [Paper/appendix_figures](Paper/appendix_figures/).
+be found in [Paper/appendix_figures](Paper/appendix_figures/README.md).
 
 It is structured as follows:
 
